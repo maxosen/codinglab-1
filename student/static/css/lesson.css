@@ -1,0 +1,80 @@
+.content--content {
+  display: block;
+  padding: 36px 256px 36px 24px;
+}
+
+#markdown {
+  color: #374151;
+}
+
+#markdown pre,
+#markdown code,
+#markdown pre code span {
+  font-family: 'Source Code Pro', monospace !important;
+}
+
+#markdown code {
+  background-color: #F3F4F6;
+  padding: 0 4px;
+}
+
+#markdown p {
+  margin-bottom: 16px;
+}
+
+#markdown {
+  margin-bottom: 64px;
+}
+
+.quick-exercise--question {
+  margin-bottom: 16px;
+}
+
+.quick-exercise--indicator {
+  color: #D97706;
+  font-weight: 500;
+}
+
+.quick-exercise--answer {
+  display: flex;
+  align-items: center;
+}
+
+.quick-exercise--answer input[type=text] {
+  display: block;
+  border: 2px solid gray;
+  padding: 6px 16px; 
+  flex-basis: 88%;
+}
+
+.quick-exercise--answer input[type=submit] {
+  display: block;
+  padding: 8px 16px;
+  color: white;
+  background-color: #3B82F6;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-left: auto;
+}
+
+.next-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 256px;
+}
+
+.next-buttons a {
+  text-decoration: none;
+  color: white;
+  font-size: 20px;
+}
+
+.next-buttons button {
+  padding: 16px 24px;
+  border: none;
+  color: white;
+  background-color: #3B82F6;
+  border-radius: 5px;
+  cursor: pointer;
+}

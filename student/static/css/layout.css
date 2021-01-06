@@ -1,0 +1,144 @@
+/*
+50 : #EFF6FF
+100: #DBEAFE
+200: #BFDBFE
+300: #93C5FD
+400: #60A5FA
+500: #3B82F6
+600: #2563EB
+700: #1D4ED8
+800: #1E40AF
+900: #1E3A8A
+*/
+
+* {
+  font-family: 'Roboto', sans-serif;
+  box-sizing: border-box;
+}
+
+body {
+  display: flex;
+  margin: 0;
+}
+
+a { text-decoration: none; }
+
+p, h1, h2, h3, h4, h5, h6 { margin: 0}
+
+/*  S I D E   N A V I G A T I O N */
+.sidenav {
+  display: flex;
+  flex-direction: column;
+  flex-basis: 7%;
+  background-color: #3B82F6;
+  color: white;
+  text-align: center;
+  font-weight: 500;
+}
+
+.sidenav-link {
+  cursor: pointer;
+  padding: 16px 8px;
+}
+
+.sidenav-link.active,
+.sidenav-link.active .navi-icon,
+.sidenav-link.active a {
+  color: #3B82F6;
+  background-color: white;
+}
+
+.navi-icon {
+  color: white;
+  font-size: 30px;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 4px;
+}
+
+.sidenav-link a {
+  font-size: 14px;
+  text-decoration: none;
+  color: white;
+}
+
+
+/*  W I D E   N A V I G A T I O N */
+.widenav {
+  flex-basis: 18%;
+  color: white;
+  background-color: #2563EB;
+}
+
+.widenav-brand {
+  display: flex;
+  flex-direction: column;
+  padding: 0 20px;
+  background: linear-gradient(90deg, rgb(255, 255, 255) 50%, rgb(220, 220, 220) 100%);
+  height: 150px;
+  justify-content: center;
+}
+
+.widenav-brand--title-coding {
+  font-size: 36px;
+  color: #1E40AF;
+  margin: 0;
+  font-weight: 300;
+}
+
+.widenav-links {
+  background-color: #2563EB;
+}
+
+.widenav-link {
+  background-color: #3B82F6;
+  border-top: 1px solid #93C5FD;
+  padding: 16px 20px;
+  cursor: pointer;
+  font-size: 20px;
+  font-weight: 300;
+}
+
+.widenav-link.active {
+  background-color: #1E40AF;
+}
+
+.widenav-link:hover {
+  background-color: #1E40AF;
+}
+
+.widenav-link a {
+  color: white;
+}
+
+/*  C O N T E N T */
+.content {
+  flex: 1;
+}
+
+.content--nav {
+  height: 150px;
+  padding-top: 36px;
+  padding-left: 24px;
+  box-shadow: 0 10px 14px -10px #858585;
+}
+
+.content--nav-title {
+  font-size: 36px;
+  font-weight: 300;
+  margin-bottom: 24px;
+}
+
+.breadcrumb {
+  display: flex;
+}
+
+.breadcrumb-separator {
+  margin: 0 8px;
+}
+
+.content--content {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 24px;
+}

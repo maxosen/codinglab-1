@@ -1,0 +1,34 @@
+.content-card {
+  display: flex;
+  margin: 12px 0;
+  padding: 24px 24px;
+  border-radius: 24px;
+  background-color: #F3F4F6;
+  width: 100%;
+}
+
+.content-card:hover {
+  background-color: #E5E7EB;
+}
+
+.content-card--title {
+  flex-basis: 80%;
+  font-size: 24px;
+  color: #4B5563;
+}
+
+.content-card--status-container {
+  flex-basis: 20%;
+}
+
+
+.content-card--status {
+  width: 100px;
+  background-color: #10B981;
+  color: white;
+  padding: 4px 16px;
+  margin: 0 auto;
+  border-radius: 500px;
+  font-size: 14px;
+  text-align: center;
+}
