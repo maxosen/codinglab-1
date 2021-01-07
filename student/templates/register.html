@@ -1,0 +1,78 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Coding Lab | Register</title>
+</head>
+<body>
+  <h1>Register</h1>
+  {{ user_form.non_field_errors }}
+  {{ student_form.non_field_errors }}
+  {{ instructor_form.non_field_errors }}
+
+  <form action="" method="post" enctype="multipart/form-data">
+    {{ user_form.as_p }}
+    {% csrf_token %}
+    <label for="role">I'm a: </label>
+    <select name="role" id="role" onclick="handleRoleChange()">
+      <option value="student">Student</option>
+      <option value="instructor">Instructor</option>
+    </select>
+    <div id="student-form-container">
+      {{ student_form.as_p }}
+    </div>
+    <div id="instructor-form-container">
+      {{ instructor_form.as_p }}
+    </div>
+    <input type="submit" value="Register">
+  </form>
+{% if user_form.errors %}
+  {% for field in user_form %}
+      {% for error in field.errors %}
+          <div class="alert alert-danger">
+              <strong>{{ error|escape }}</strong>
+          </div>
+      {% endfor %}
+  {% endfor %}
+  {% for error in user_form.non_field_errors %}
+      <div class="alert alert-danger">
+          <strong>{{ error|escape }}</strong>
+      </div>
+  {% endfor %}
+{% endif %}
+{% if profile_form.errors %}
+  {% for field in profile_form %}
+      {% for error in field.errors %}
+          <div class="alert alert-danger">
+              <strong>{{ error|escape }}</strong>
+          </div>
+      {% endfor %}
+  {% endfor %}
+  {% for error in profile_form.non_field_errors %}
+      <div class="alert alert-danger">
+          <strong>{{ error|escape }}</strong>
+      </div>
+  {% endfor %}
+{% endif %}
+
+</body>
+
+<script type="text/javascript">
+var studentFormHtml = `{{ student_form.as_p }}`;
+var instructorFormHtml = `{{ instructor_form.as_p }}`;
+handleRoleChange();
+function handleRoleChange() {
+  var instructorForm = document.getElementById('instructor-form-container');
+  var studentForm = document.getElementById('student-form-container');
+  var value = document.getElementById('role').value;
+  if (value === 'student') {
+    instructorForm.innerHTML = '';
+    studentForm.innerHTML = studentFormHtml;
+  }
+  else {
+    instructorForm.innerHTML = instructorFormHtml;
+    studentForm.innerHTML = '';
+  }
+}
+</script>
+</html>

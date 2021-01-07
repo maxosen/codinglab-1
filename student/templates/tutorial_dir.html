@@ -7,21 +7,10 @@
   <title>Coding Lab | Exercise</title>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;1,100;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{% static 'css/layout.css' %}">
-  <link rel="stylesheet" href="{% static 'css/exercise.css' %}">
-
-  <script src="{% static 'vendor/codemirror/lib/codemirror.js' %}"></script>
-  <script src="{% static 'vendor/codemirror/mode/javascript.js' %}"></script>
-  <link rel="stylesheet" href="{% static 'vendor/codemirror/lib/codemirror.css' %}">
-  <link rel="stylesheet" href="{% static 'vendor/prism.css' %}">
-
-
-  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-
-
+  <link rel="stylesheet" href="{% static 'css/tutorial_dir.css' %}">
 </head>
 <body>
-
-  <!-- S I D E   N A V I G A T I O N -->
+<!-- S I D E   N A V I G A T I O N -->
 <div class="sidenav">
   <div class="sidenav-link">
     <div class="navi-icon">
@@ -58,7 +47,7 @@
       <a href="#">Class home</a>
     </div>
     <div class="widenav-link active">
-      <a href="#">Tutorials</a>
+      <a href="#">My Tutorials</a>
     </div>
   </div>
 </div>
@@ -66,7 +55,7 @@
 <!-- C O N T E N T -->
 <div class="content">
   <nav class="content--nav">
-    <h1 class="content--nav-title">Exercise {{ exercise.order }}: {{ exercise.title }}</h1>
+    <h1 class="content--nav-title">Basics of JavaScript</h1>
     <div class="breadcrumb">
       <p class="breadcrumb-link">Tutorial 1</p>
       <div class="breadcrumb-separator">/</div>
@@ -75,95 +64,66 @@
   </nav>
 
   <div class="content--content">
-    <div id="markdown"></div>
-
-    <div class="editor-options">
-      <button class="editor--chat-btn">Discuss</button>
-      <button class="editor--hint-btn">Hint</button>
-      <button class="editor--submit-btn" id="editor-submit"
-        onclick="submit()"  
-      >Submit</button>
-    </div>
-    <div class="exercise-input--container">
-      <div class="editor-container">
-        <div id="editor"></div>
+    {% for tutorial in tutorials %}
+    <div class="tutorial-card">
+      <div class="tutorial-card--img">
+        <img src="https://miro.medium.com/max/3600/1*6ahbWjp_g9hqhaTDSJOL1Q.png" alt="">
       </div>
-
-      <div class="testcase-container">
-        <table class="testcase-table">
-          <thead>
-            <tr>
-              <th>Result</th>
-              <th>Input</th>
-              <th>Output</th>
-              <th>You</th>
-            </tr>
-          </thead>
-          <tbody>
-            {% for testcase in testcases %}
-            <tr>
-              <td></td>
-              <td>{{ testcase.input }}</td>
-              <td>{{ testcase.output }}</td>
-              <td></td>
-            </tr>
-            {% endfor %}
-          </tbody>
-        </table>
+      <div class="tutorial-card--content">
+        <p class="tutorial-card--title">{{ tutorial.title }}</p>
+        <div class="tutorial-card--btns">
+          <button class="tutorial-card--btn">
+            Assign
+          </button>
+          <a
+            class="tutorial-card--btn"
+            href="{% url 'editor' class_id=request.resolver_match.kwargs.class_id tutorial_id=tutorial.id %}">
+            Edit
+          </a>
+        </div>
       </div>
     </div>
-
-    <div class="next-buttons">
-      {% if prev != None %}
-        <button class="prev-button"><a href="">Previous</a></button>
-      {% endif %}
-      {% if next != None %}
-        <button class="next-button"><a href="">Next</a></button>
-      {% endif %}
-    </div>
+    {% endfor %}
+  </div>
+  <div class="create-btns">
+    <button id="create-btn" onclick="createTutorial('lesson')">Create Lessons</button>
+    <button id="create-btn" onclick="createTutorial('exercise')">Create Exercises</button>
   </div>
 </div>
 
-<script src="{% static 'vendor/prism.js' %}"></script>
-<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.js"></script>
-<script>
-document.getElementById('markdown').innerHTML =
-  marked('{{ exercise.question|escapejs }}');
+<!-- P O P U P S -->
+<div class="assign-popup" id="assign-popup">
 
-var editorEl = document.getElementById('editor');
-var myCodeMirror = CodeMirror(editorEl, {
-  value: "function func() {\n\n\n}\n",
-  mode:  "javascript",
-  lineNumbers: true,
-  autofocus: true,
-  lineWrapping: true,
-  tabSize: 2,
-});
+</div>
 
-function submit() {
-  // PARAM=request.resolver_match.kwargs.PARAM
-  var usercode = myCodeMirror.getValue()
-  var url = "{% url 'submit_exercise' tutorial_id=request.resolver_match.kwargs.tutorial_id id=request.resolver_match.kwargs.id %}";
-  // var csrfToken = document.querySelector("[name='csrf-token']").content;
-  var csrfToken = Cookies.get('csrftoken');
-  var requestBody = {
-    'code': JSON.stringify(usercode)
-  }
-  var request = new Request(
-    url,
-    {
-      method: 'POST',
-      headers: {'X-CSRFToken': csrfToken},
-      body: JSON.stringify(requestBody),
-      mode: 'same-origin',
-    }
-  );
-  fetch(request)
-    .then(response => response.json())
-    .then(data => console.log(data));
+<div class="create-popup" id="create-popup">
+  <p class="popup-title">Create Tutorial</p>
+  <form action="" method="post">
+    <label for="{{ tutorial_form.title.id_for_label }}">Title</label>
+    {{ tutorial_form.title }}
+    <input type="hidden" name="lesson" id="form--create-type">
+    {{ tutorial_form.tutorial_type }}
+    {% csrf_token %}
+    <div class="popup-btns">
+      <button class="popup-cancel-btn" onclick="closeCreatePopup()">Cancel</button>
+      <input class="popup-submit-btn" type="submit" value="Create">
+    </div>
+  </form>
+</div>
+
+<script type="text/javascript">
+function createTutorial(type) {
+  document.getElementById('form--create-type').value = type;
+  document.getElementById('create-popup').style.display = 'block';
+  if (type === 'lesson')
+    document.getElementById('tutorial-type--input').value = 'LS'
+  else
+    document.getElementById('tutorial-type--input').value = 'EX'
+}
+
+function closeCreatePopup() {
+  document.getElementById('create-popup').style.display = 'none';
 }
 
 </script>
-
 </body>

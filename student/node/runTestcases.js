@@ -1,31 +1,41 @@
-const ivm = require("isolated-vm")
+const ivm = require("isolated-vm");
 
-console.log(process.argv);
-// const { usercode } = req.body;
-// const { problem } = req.params;
+const code = process.argv[2]
+              .slice(1, -1)
+              .replace(/\\n/g, '\n')
+              .replace(/\\t/g, '\t');
+const testcases = JSON.parse(process.argv[3]);
 
-// 1. create the environment
-let isolate = new ivm.Isolate();
-let context = await isolate.createContext();
-try {
-  let script = await isolate.compileScript(usercode);
-  await script.run(context);
-} catch (e) {
-  res.json(createErrorJson(e));
-  return;
-}
+async function checkResult() {
+  // 1. Create the environment
+  const isolate = new ivm.Isolate();
+  const context = await isolate.createContext();
 
-// 2. run the code, and await the result
-try {
-  let fnReference = await context.global.get("problem");
-  const results = [];
-  for (let i = 0; i < testcases.length; i++) {
-    const input = testcases[i][0];
-    const output = await fnReference.apply(undefined, input);
-    results.push(JSON.stringify(output) === JSON.stringify(testcases[i][1]));
+  // 1. Creates the environment
+  try {
+    const script = await isolate.compileScript(code);
+    await script.run(context);
+  } catch (e) {
+    console.log('Error');
+    return;
   }
-  res.json(`{"result": ${results}}`);
-} catch (e) {
-  res.json(createErrorJson(e));
-  return;
+
+  try {
+    const fnRef = await context.global.get('func');
+    const results = [];
+    for (let i = 0; i < testcases.length; i++) {
+      const { input, output } = testcases[i];
+      const userOutput = await fnRef.apply(undefined, [input]);
+      const result = {
+        isMatch: JSON.stringify(userOutput) === JSON.stringify(output),
+        userOutput: userOutput
+      }
+      results.push(result);
+    }
+    console.log(JSON.stringify(results));
+  } catch (e) {
+    console.log('Error');
+  }
 }
+
+checkResult();

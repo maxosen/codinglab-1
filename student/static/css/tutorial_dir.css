@@ -1,0 +1,122 @@
+.tutorial-card {
+  flex-basis: 30%;
+  height: 400px;
+  position: relative;
+  background-color: #F3F4F6;
+  margin-left: 24px;
+  margin-bottom: 48px;
+}
+
+.tutorial-card--img img {
+  height: 250px;
+  width: 100%;
+  object-fit: cover;
+}
+
+.tutorial-card--content {
+  padding: 16px 24px;
+}
+
+.tutorial-card--title {
+  font-size: 16px;
+  font-weight: 500;
+  margin-top: 8px;
+  letter-spacing: 0.025em;
+}
+
+.tutorial-card--btns {
+  display: flex;
+  position: absolute;
+  bottom: 16px;
+  right: 24px;
+
+}
+
+.tutorial-card--btn {
+  display: block;
+  border-radius: 4px;
+  margin-left: 8px;
+  padding: 8px 16px;
+  background-color: #3B82F6;
+  color: white;
+  text-align: center;
+  border: none;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.tutorial-card--btn a {
+  text-decoration: none;
+  color: white;
+}
+
+.create-btns {
+  display: flex;
+  justify-content: flex-end;
+  padding: 0 64px;
+  margin-bottom: 40px;
+}
+
+.create-btns button {
+  display: block;
+  border-radius: 4px;
+  margin-left: 16px;
+  padding: 16px 32px;
+  font-size: 18px;
+  background-color: #3B82F6;
+  color: white;
+  text-align: center;
+  border: none;
+  cursor: pointer;
+}
+
+.assign-popup,
+.create-popup {
+  display: none;
+  padding: 12px 20px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  color: #374151;
+  border: 1px solid #9CA3AF;
+  width: 400px;
+}
+
+.popup-btns {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.popup-title {
+  margin-bottom: 24px;
+}
+
+.create-popup form label {
+  display: block;
+  margin-bottom: 8px;
+}
+
+.create-popup form input[type=text] {
+  padding: 4px 8px;
+  border: 1px solid #9CA3AF;
+  width: 100%;
+}
+
+.popup-btns {
+  margin-top: 24px;
+}
+
+.popup-btns button, input[type=submit] {
+  padding: 8px 8px;
+  border: none;
+  margin: 0 4px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.popup-submit-btn {
+  color: white;
+  background-color: #3B82F6;
+}

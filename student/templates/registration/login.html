@@ -1,0 +1,38 @@
+{% load static %}
+
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Coding Lab | Exercise</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;1,100;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'css/login.css' %}">
+</head>
+<body>
+<div class="content-container">
+  <div class="form-container">
+    
+    <p class="form--title">Login</p>
+    <form method="post" class="form">
+      {{ form.non_field_errors }}
+      <p class="form--field">
+        <label for="{{ form.username.id_for_label }}">Username</label>
+        {{ form.username }}
+        {{ form.username.errors }}
+      </p>
+      <p class="form--field">
+        <label for="{{ form.password.id_for_label">Password</label>
+        {{ form.password }}
+        {{ form.password.errors }}
+      </p>
+
+      <!-- {{ form.as_p }} -->
+      {% csrf_token %}
+      <p style="margin-top: 32px;"><input type="submit" value="Login" class="btn"></p>
+    </form>
+    <p style="margin-bottom: 32px; padding-left: 20px;">
+      Don't have an account? Register <a class="redirect-link" href="{% url 'register' %}">here</a>.
+    </p>
+  </div>
+</div>
+</body>

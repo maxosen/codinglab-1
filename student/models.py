@@ -1,17 +1,12 @@
 from django.db import models
 from django.conf import settings
 
-
 class InstructorProfile(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL,
                                 on_delete=models.CASCADE)
-    firstname = models.CharField(max_length=50)
-    lastname = models.CharField(max_length=50)
     phone = models.CharField(max_length=50)
-    email = models.CharField(max_length=100)
     # TODO: specify a default photo
     photo = models.ImageField(upload_to='profile')
-
 
 
 class Class(models.Model):
@@ -23,21 +18,15 @@ class Class(models.Model):
 
     # Introduction in Markdown
     introduction = models.TextField()
-
     instructor = models.ForeignKey(InstructorProfile, on_delete=models.CASCADE)
-
 
 
 class StudentProfile(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL,
                                 on_delete=models.CASCADE)
-    firstname = models.CharField(max_length=50)
-    lastname = models.CharField(max_length=50)
     phone = models.CharField(max_length=50)
-    email = models.CharField(max_length=100)
     # TODO: specify a default photo
     photo = models.ImageField(upload_to='profile')
-
     class_enrolled = models.ManyToManyField(Class,
                                         related_name='enrolled_in',
                                         blank=True)
@@ -48,17 +37,24 @@ class Tutorial(models.Model):
     Tutorial is the main content on the platform.
     Created by the instructors, assigned to the students.
     '''
+    LESSON = 'LS'
+    EXERCISE = 'EX'
+    TUTORIAL_TYPE = [
+        (LESSON, 'Lesson'),
+        (EXERCISE, 'Exercise')
+    ]
+
     title = models.CharField(max_length=400)
     created_by = models.ForeignKey(InstructorProfile,
                                 on_delete=models.DO_NOTHING)
+    tutorial_class = models.ForeignKey(Class, on_delete=models.CASCADE)
     date_created = models.DateField(auto_now_add=True)
+    tutorial_type = models.CharField(max_length=2, choices=TUTORIAL_TYPE)
 
     # Assigned to which student
     assignment = models.ManyToManyField(StudentProfile,
                                         through='Assignment',
                                         blank=True)
-    tutorial_class = models.ForeignKey(Class, on_delete=models.CASCADE)
-
     def get_next_lesson(self, id):
         lessons = Lesson.objects.filter(tutorial=self)
         lessons_size = len(lessons)

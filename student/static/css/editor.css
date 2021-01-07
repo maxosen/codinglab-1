@@ -1,0 +1,157 @@
+.content--content {
+  display: flex;
+  padding: 0;
+}
+
+.lessons-sidebar {
+  flex-basis: 20%;
+  border-right: 1px solid #E5E7EB;
+  padding-top: 32px;
+}
+
+.sidebar-create-btn {
+  display: block;
+  padding: 8px 16px;
+  width: 80%;
+  text-decoration: none;
+  color: white;
+  background-color: #3B82F6;
+  border-radius: 4px;
+  margin: 0 auto;
+  margin-bottom: 24px;
+  text-align: center;
+}
+
+.edit-link {
+  padding: 8px 16px;
+}
+
+.edit-link a {
+  text-decoration: none;
+  color: #6B7280;
+}
+
+.edit-link.active {
+  background-color: #4B5563;
+}
+
+.edit-link.active a {
+  color: white;
+}
+
+.lessons-editor {
+  flex-basis: 80%;
+  flex-grow: 0;
+  padding: 24px;
+}
+
+.toggler-dashboard {
+  margin-top: 36px;
+  margin-bottom: 16px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  color: #374151;
+}
+
+#editor-toggler {
+  position: absolute;
+  left: 120px;
+  margin-bottom: 16px;
+  padding: 10px 16px;
+  color: #4B5563;
+  background-color: #E5E7EB;
+  border-radius: 8px;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+#editor {
+  font-color: #374151;
+}
+
+#html-container {
+  color: #374151;
+}
+
+#htmlContainer pre,
+#html-container code,
+#html-container pre code span {
+  font-family: 'Source Code Pro', monospace !important;
+}
+
+#html-container code,
+#html-container pre {
+  background-color: #F3F4F6;
+  padding: 2px 4px;
+}
+
+#html-container h1, #html-container h2, #html-container h3 {
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+
+#html-container p {
+  margin-bottom: 16px;
+}
+
+#html-container {
+  margin-bottom: 64px;
+}
+
+.CodeMirror, .CodeMirror-scroll {
+  height: 30px;
+}
+
+.editor-form .field-container {
+  display: flex;
+  margin-top: 16px;
+  margin-bottom: 16px;
+}
+
+.field-container label {
+  flex-basis: 20%;
+  color: #4B5563;
+}
+
+.field-container input {
+  flex-basis: 80%;
+  padding: 4px 8px;
+  border: 1px solid #6B7280;
+  font-size: 16px;
+}
+
+.field-container input:focus {
+  border: 1px solid #374151;
+}
+
+.content-label {
+  display: block;
+  color: #4B5563;
+  margin-bottom: 8px;
+}
+
+.exercise-editor--container textarea {
+    padding: 4px 8px;
+    border: 1px solid #6B7280;
+    font-size: 16px;
+}
+
+.editor-form {
+  display: block;
+}
+
+.editor-submit {
+  display: block;
+  margin-top: 64px;
+  margin-right: 32px;
+  margin-left: auto;
+  padding: 8px 16px;
+  color: white;
+  background-color: #3B82F6;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+}
