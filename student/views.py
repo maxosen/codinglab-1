@@ -205,27 +205,8 @@ def submit_lesson(request, id, assignment_id):
 '''
 INSTRUCTOR VIEWS
 '''
-
 @login_required
 def editor(request, class_id, tutorial_id):
-    '''
-    2. Display list of lessons or exercises at the side
-    3. 
-    3. 
-    '''
-    '''
-    if request.method == 'POST':
-        form = LessonForm(request.POST)
-        if form.is_valid():
-            new_lesson = form.save(commit=False)
-            # TODO: how to get the tutorial (using hidden form field or URL?)
-            # TODO: configure the tutorial creation
-            new_lesson.tutorial = tutorial
-            new_lesson.save()
-            return HttpResponse('Successfully created')
-    else:
-        form = LessonForm()
-    '''
     profile = InstructorProfile.objects.get(user=request.user)
     tutorial = Tutorial.objects.get(id=tutorial_id)
     if request.method == 'POST':
@@ -359,9 +340,7 @@ def assigned_students(request, class_id, tutorial_id):
     for student in students:
         is_assigned = False
         try:
-            print(Assignment.objects.get(student=student, tutorial__id=tutorial_id))
-            print(tutorial_id)
-            print(student)
+            Assignment.objects.get(student=student, tutorial__id=tutorial_id)
             is_assigned = True
         except:
             pass
@@ -370,7 +349,6 @@ def assigned_students(request, class_id, tutorial_id):
             'name': student.user.username,
             'status': is_assigned
         })
-
     return JsonResponse(response, safe=False)
 
 
