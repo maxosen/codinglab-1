@@ -10,7 +10,7 @@ This page contains screenshots, input & output of:
 
 **Tutorial Editor Module**
 
-* Lesson Editor
+* [Lesson Editor](https://github.com/maxosen/codinglab-1/blob/main/documentation/input-output.md#lesson-editor)
 * Exercise Editor
 
 <br>
