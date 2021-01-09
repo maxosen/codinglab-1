@@ -1,9 +1,3 @@
-<style>
-img {
-    border: 1px solid black;   
-}
-</style>
-
 ## Screenshots, Input & Output
 This page contains screenshots, input & output of:
 
