@@ -159,6 +159,32 @@ Form / Editor for creating an exercise
 
 Sample Inputs for creating an exercise
 
+**Expected Input**
+
+Title: String
+Order: Integer
+Content: String
+Testcases: String
+
+**Input Validation**
+
+`Order` must be an Integer
+* This rule is enforced by HTML input field validation, and at the database level.
+Expected Output
+
+`Testcases` must be a syntactically valid JSON (JavaScript Object Notation) string
+* This rule is enforced by JavaScript at client-side.
+
+A new row `Exercise` in PostgreSQL that consists of following columns with following data types:
+
+ID `PRIMARY KEY`
+Tutorial `FOREIGN KEY`
+Title `VARCHAR`
+Order `INTEGER`
+Question `TEXT`
+Testcases `TEXT`
+Date Created `DATE`
+
 ## Tutorial and Exercise Module
 ### Lesson Quick Exercise
 <img src="markdown-images/lesson-screenshot.png" style="width: 500px;">
