@@ -31,13 +31,13 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'student.apps.StudentConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'student.apps.StudentConfig',
 ]
 
 MIDDLEWARE = [
@@ -122,3 +122,5 @@ STATIC_URL = '/static/'
 
 LOGIN_URL = 'login'
 LOGOUT_URL = 'logout'
+
+APPEND_SLASH = True

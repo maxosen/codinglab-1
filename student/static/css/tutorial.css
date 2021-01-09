@@ -23,12 +23,17 @@
 
 
 .content-card--status {
-  width: 100px;
-  background-color: #10B981;
+  width: 130px;
   color: white;
+  background-color: #9CA3AF;
   padding: 4px 16px;
   margin: 0 auto;
   border-radius: 500px;
   font-size: 14px;
   text-align: center;
+}
+
+.content-card--status.success {
+  width: 100px;
+  background-color: #10B981;
 }

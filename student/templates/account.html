@@ -7,7 +7,7 @@
   <title>Coding Lab | Exercise</title>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;1,100;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{% static 'css/layout.css' %}">
-  <link rel="stylesheet" href="{% static 'css/tutorial.css' %}">
+  <link rel="stylesheet" href="{% static 'css/account.css' %}">
 
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 </head>
@@ -15,7 +15,7 @@
 
   <!-- S I D E   N A V I G A T I O N -->
 <div class="sidenav">
-  <div class="sidenav-link">
+  <div class="sidenav-link active">
     <a href="{% url 'account' %}">
       <div class="navi-icon">
         <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 512 512" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M256 288c79.5 0 144-64.5 144-144S335.5 0 256 0 112 64.5 112 144s64.5 144 144 144zm128 32h-55.1c-22.2 10.2-46.9 16-72.9 16s-50.6-5.8-72.9-16H128C57.3 320 0 377.3 0 448v16c0 26.5 21.5 48 48 48h416c26.5 0 48-21.5 48-48v-16c0-70.7-57.3-128-128-128z"></path></svg>
@@ -24,7 +24,7 @@
     </a>
   </div>
 
-  <div class="sidenav-link active">
+  <div class="sidenav-link">
     <a href="{% url 'classes' %}">
       <div class="navi-icon"><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 640 512" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M208 352c-2.39 0-4.78.35-7.06 1.09C187.98 357.3 174.35 360 160 360c-14.35 0-27.98-2.7-40.95-6.91-2.28-.74-4.66-1.09-7.05-1.09C49.94 352-.33 402.48 0 464.62.14 490.88 21.73 512 48 512h224c26.27 0 47.86-21.12 48-47.38.33-62.14-49.94-112.62-112-112.62zm-48-32c53.02 0 96-42.98 96-96s-42.98-96-96-96-96 42.98-96 96 42.98 96 96 96zM592 0H208c-26.47 0-48 22.25-48 49.59V96c23.42 0 45.1 6.78 64 17.8V64h352v288h-64v-64H384v64h-76.24c19.1 16.69 33.12 38.73 39.69 64H592c26.47 0 48-22.25 48-49.59V49.59C640 22.25 618.47 0 592 0z"></path></svg></div>
       My Classes
@@ -65,42 +65,25 @@
 
 <!-- C O N T E N T -->
 <div class="content">
-  <nav class="content--nav">
-    <h1 class="content--nav-title">Basics of JavaScript</h1>
-  </nav>
-
-  <div class="content--content">
-    {% if tutorial.tutorial_type == 'LS' %}
-      {% for lesson in units %}
-        <a href="{% url 'lesson' assignment_id=request.resolver_match.kwargs.id|slugify id=lesson.id %}" class="content-card">
-          <p class="content-card--title">{{ lesson.title }}</p>
-          <div class="content-card--status-container">
-            <div class="content-card--status {% if lesson.progress %}success{% endif %}">
-              {% if lesson.progress %}
-                Completed
-              {% else %}
-                Not Completed
-              {% endif %}
-            </div>
-          </div>
-        </a>
-      {% endfor %}
-    {% else %}
-      {% for exercise in units %}
-        <a href="{% url 'exercise' assignment_id=request.resolver_match.kwargs.id|slugify id=exercise.id %}" class="content-card">
-          <p class="content-card--title">{{ exercise.title }}</p>
-          <div class="content-card--status-container">
-            <div class="content-card--status {% if exercise.progress %}success{% endif %}">
-              {% if exercise.progress %}
-                Completed
-              {% else %}
-                Not Completed
-              {% endif %}
-            </div>
-          </div>
-        </a>
-      {% endfor %}
-    {% endif %}
+  <div class="info-container">
+    <p class="info-title">Username</p>
+    <p class="info-content">{{ request.user.username }}</p>
+  </div>
+  <div class="info-container">
+    <p class="info-title">First name</p>
+    <p class="info-content">{{ request.user.first_name }}</p>
+  </div>
+  <div class="info-container">
+    <p class="info-title">Last name</p>
+    <p class="info-content">{{ request.user.last_name }}</p>
+  </div>
+  <div class="info-container">
+    <p class="info-title">Profile picture</p>
+    <img src="{{ profile.photo.url }}" alt="" class="info-profile-pic">
+  </div>
+  <div class="info-container">
+    <p class="info-title">Phone</p>
+    <p class="info-content">{{ profile.phone }}</p>
   </div>
 </div>
 </body>

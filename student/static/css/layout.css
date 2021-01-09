@@ -25,6 +25,7 @@ a { text-decoration: none; }
 
 p, h1, h2, h3, h4, h5, h6 { margin: 0}
 
+
 /*  S I D E   N A V I G A T I O N */
 .sidenav {
   display: flex;
@@ -80,10 +81,38 @@ p, h1, h2, h3, h4, h5, h6 { margin: 0}
 }
 
 .widenav-brand--title-coding {
-  font-size: 36px;
+  font-size: 24px;
   color: #1E40AF;
   margin: 0;
-  font-weight: 300;
+  font-weight: 400;
+}
+
+.profile-container {
+  display: flex;
+  padding: 16px 0;
+  align-items: center;
+}
+
+.profile-photo {
+  border-radius: 50%;
+  border: 2px solid #60A5FA;
+  width: 50px;
+  height: 50px;
+}
+
+.profile-text-container {
+  padding-left: 12px;
+}
+
+.profile-username {
+  color: #1E40AF;
+  font-size: 18px;
+}
+
+.profile-role {
+  font-size: 14px;
+  color: #1E40AF;
+  margin-top: 4px;
 }
 
 .widenav-links {

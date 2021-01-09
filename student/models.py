@@ -157,9 +157,22 @@ class Assignment(models.Model):
     progress = models.IntegerField(default=0)
     is_optional = models.BooleanField(default=False)
 
+    # keep in mind this has a side effect
+    # another possible solution might be to use a SAVE signal receiver
     @classmethod
     def create(cls, student, tutorial):
         assignment = cls(student=student, tutorial=tutorial)
+        assignment.save()
+        if tutorial.tutorial_type == Tutorial.LESSON:
+            lessons = Lesson.objects.filter(tutorial=tutorial)
+            for lesson in lessons:
+                progress = LessonProgress(lesson=lesson, assignment=assignment)
+                progress.save()
+        else:
+            exercises = Exercise.objects.filter(tutorial=tutorial)
+            for exercise in exercises:
+                progress = ExerciseProgress(exercise=exercise, assignment=assignment)
+                progress.save()
         return assignment
 
 
@@ -180,10 +193,32 @@ class Assignment(models.Model):
 class LessonProgress(models.Model):
     lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE)
     assignment = models.ForeignKey(Assignment, on_delete=models.CASCADE)
-    progress = models.BooleanField(default=False)
+    completed = models.BooleanField(default=False)
 
 
 class ExerciseProgress(models.Model):
     exercise = models.ForeignKey(Exercise, on_delete=models.CASCADE)
     assignment = models.ForeignKey(Assignment, on_delete=models.CASCADE)
-    progress = models.BooleanField(default=False)
+    completed = models.BooleanField(default=False)
+
+
+class ExerciseSolution(models.Model):
+    exercise = models.ForeignKey(Exercise, on_delete=models.CASCADE)
+    assignment = models.ForeignKey(Assignment, on_delete=models.CASCADE)
+    solution = models.TextField()
+
+
+class LessonFeedback(models.Model):
+    lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE)
+    assignment = models.ForeignKey(Assignment, on_delete=models.CASCADE)
+    feedback = models.TextField()
+    rating = models.IntegerField()
+
+
+class ExerciseFeedback(models.Model):
+    exercise = models.ForeignKey(Exercise, on_delete=models.CASCADE)
+    assignment = models.ForeignKey(Assignment, on_delete=models.CASCADE)
+    feedback = models.TextField()
+    rating = models.IntegerField()
+    
+

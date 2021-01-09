@@ -1,0 +1,25 @@
+.content {
+  padding: 48px;
+}
+
+.info-container {
+  margin-bottom: 32px;
+}
+
+.info-title {
+  font-size: 24px;
+  color: #9CA3AF;
+  margin-bottom: 8px;
+}
+
+.info-content {
+  font-size: 32px;
+  color: #374151;
+}
+
+.info-profile-pic {
+  width: 200px;
+  height: 200px;
+  border-radius: 8px;
+  border: 1.5px solid #9CA3AF;
+}

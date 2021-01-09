@@ -7,12 +7,10 @@
   <title>Coding Lab | Exercise</title>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;1,100;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{% static 'css/layout.css' %}">
-  <link rel="stylesheet" href="{% static 'css/tutorial.css' %}">
+  <link rel="stylesheet" href="{% static 'css/my_classes.css' %}">
 
-  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 </head>
 <body>
-
   <!-- S I D E   N A V I G A T I O N -->
 <div class="sidenav">
   <div class="sidenav-link">
@@ -70,37 +68,21 @@
   </nav>
 
   <div class="content--content">
-    {% if tutorial.tutorial_type == 'LS' %}
-      {% for lesson in units %}
-        <a href="{% url 'lesson' assignment_id=request.resolver_match.kwargs.id|slugify id=lesson.id %}" class="content-card">
-          <p class="content-card--title">{{ lesson.title }}</p>
-          <div class="content-card--status-container">
-            <div class="content-card--status {% if lesson.progress %}success{% endif %}">
-              {% if lesson.progress %}
-                Completed
-              {% else %}
-                Not Completed
-              {% endif %}
-            </div>
-          </div>
-        </a>
-      {% endfor %}
-    {% else %}
-      {% for exercise in units %}
-        <a href="{% url 'exercise' assignment_id=request.resolver_match.kwargs.id|slugify id=exercise.id %}" class="content-card">
-          <p class="content-card--title">{{ exercise.title }}</p>
-          <div class="content-card--status-container">
-            <div class="content-card--status {% if exercise.progress %}success{% endif %}">
-              {% if exercise.progress %}
-                Completed
-              {% else %}
-                Not Completed
-              {% endif %}
-            </div>
-          </div>
-        </a>
-      {% endfor %}
-    {% endif %}
+    {% for class in classes %}
+    <div class="tutorial-card">
+      <div class="tutorial-card--img">
+        <img src="https://miro.medium.com/max/3600/1*6ahbWjp_g9hqhaTDSJOL1Q.png" alt="">
+      </div>
+      <div class="tutorial-card--content">
+        <p class="tutorial-card--title">{{ class.title }}</p>
+        {% if profile.role == 'S' %}
+          <a href="{% url 'class_tutorials' class.id %}" class="tutorial-card--link">View Class</a>
+        {% else %}
+          <a href="{% url 'tutorial_dir' class.id %}" class="tutorial-card--link">View Class</a>
+        {% endif %}
+      </div>
+    </div>
+    {% endfor %}
   </div>
 </div>
 </body>
