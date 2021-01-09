@@ -161,10 +161,10 @@ Sample Inputs for creating an exercise
 
 **Expected Input**
 
-Title: String
-Order: Integer
-Content: String
-Testcases: String
+1. Title: String
+2. Order: Integer
+3. Content: String
+4. Testcases: String
 
 **Input Validation**
 
@@ -175,15 +175,17 @@ Expected Output
 `Testcases` must be a syntactically valid JSON (JavaScript Object Notation) string
 * This rule is enforced by JavaScript at client-side.
 
+**Expected Output**
+
 A new row `Exercise` in PostgreSQL that consists of following columns with following data types:
 
-ID `PRIMARY KEY`
-Tutorial `FOREIGN KEY`
-Title `VARCHAR`
-Order `INTEGER`
-Question `TEXT`
-Testcases `TEXT`
-Date Created `DATE`
+1. ID `PRIMARY KEY`
+2. Tutorial `FOREIGN KEY`
+3. Title `VARCHAR`
+4. Order `INTEGER`
+5. Question `TEXT`
+6. Testcases `TEXT`
+7. Date Created `DATE`
 
 ## Tutorial and Exercise Module
 ### Lesson Quick Exercise
