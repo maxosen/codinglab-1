@@ -4,21 +4,25 @@ Each grouped by its modules.
 
 This page contains screenshots, input & output of:
 
-* Account Module
-    * Login
-    * Registration
+Account Module
 
-* Tutorial Editor Module
-    * Lesson Editor
-    * Exercise Editor
+* Login
+* Registration
 
-* Tutorial and Exercise Module
-    * Lesson
-    * Exercise
+Tutorial Editor Module
 
-* Feedback, Behaviour and Analytics Module
-    * Feedback Form
-    * Analytics
+* Lesson Editor
+* Exercise Editor
+
+Tutorial and Exercise Module
+
+* Lesson
+* Exercise
+
+Feedback, Behaviour and Analytics Module
+
+* Feedback Form
+* Analytics
 
 ## Tutorial Editor Module
 ### Lesson Editor
