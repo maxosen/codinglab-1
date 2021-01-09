@@ -2,16 +2,16 @@
 This page contains screenshots, input and output of each screen.\
 Each grouped by its modules.
 
-This page contains screenshots, input & output of:
+## This page contains screenshots, input & output of:
 
 Account Module
 
 * Login
 * Registration
 
-Tutorial Editor Module
+[Tutorial Editor Module](https://github.com/maxosen/codinglab-1/blob/main/documentation/input-output.md#tutorial-editor-module)
 
-* Lesson Editor
+* [Lesson Editor](https://github.com/maxosen/codinglab-1/blob/main/documentation/input-output.md#lesson-editor)
 * Exercise Editor
 
 Tutorial and Exercise Module
