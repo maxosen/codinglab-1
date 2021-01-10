@@ -23,6 +23,7 @@ urlpatterns = [
     # path for instructors
     path('class/<int:class_id>/editor/<int:tutorial_id>', views.editor, name='editor'),
     path('class/<int:class_id>/tutorial_dir', views.tutorial_dir, name='tutorial_dir'),
+    path('class/<int:class_id>/grouping', views.grouping, name='grouping'),
     path('class/<int:class_id>/tutorial/<int:tutorial_id>/assignment_status', views.assigned_students, name='assignment_status'),
     # path for instructors: ANALYTICS
     path('class/<int:class_id>/tutorial_statistics/<int:tutorial_id>', views.tutorial_statistics, name='tutorial_statistics'),

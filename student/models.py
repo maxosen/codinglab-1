@@ -123,7 +123,7 @@ class Lesson(models.Model):
     date_created = models.DateField(auto_now_add=True)
 
     def __str__(self):
-        return f'Tutorial.ID:<{self.id}>({self.title})Order:{self.order}'
+        return f'ID:{self.id}. Title: {self.title}'
 
 
 class Exercise(models.Model):

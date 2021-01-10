@@ -1,6 +1,7 @@
 import itertools
+import numpy as np
 
-from .models import Tutorial, Assignment, Lesson, Exercise, LessonProgress, ExerciseProgress
+from .models import StudentProfile, Tutorial, Assignment, Lesson, Exercise, LessonProgress, ExerciseProgress
 
 
 '''
@@ -70,4 +71,68 @@ def getOverallCompletionRate(percentages: dict) -> float:
     return round(overall / len(percentages), 2)
 
 
-    
+
+def getStudentEngagement() -> float:
+    return 5
+
+def getStudentSkill() -> float:
+    return 5
+
+
+def shuffledSSD(scores: list, target: int, length: int, split_size: int):
+    indices = np.arange(length)
+    np.random.shuffle(indices)
+    scores = np.array(scores)[indices]
+    scores = np.array_split(scores, length / split_size)
+    averages = [np.sum(score) for score in scores]
+    SSE = np.square(np.array(averages) - np.array(target))
+    SSE = np.sum(SSE)
+    return {indices: SSE}
+
+'''
+return the permutations of closest sub-array average to target
+'''
+def findClosestPermutation(scores: list, target: int, length: int, split_size: int, iterations: int=100):
+    permutations = {}
+    for i in range(iterations):
+        permutations.append(shuffledSSD(scores, target, length, split_size))
+    index = min(permutations.values())
+    indices = permutations.keys[index]
+    return indices
+
+
+'''
+Return an array of subarrays of StudentProfile:
+
+size of subarrays: group_size
+group_by: must be either "EN" (Engagement) or "SK" (Skill)
+
+Engagement will measure 
+
+
+Example:
+[
+    [Student 1, Student 2, Student 3],
+    [Student 1, Student 2, Student 3],
+    ...
+    ...
+]
+'''
+def groupStudents(students: StudentProfile, group_size: int, group_by: str):
+    if group_by == "EN":
+        student_scores = {student: getStudentSkill(student) for student in students}
+    else:
+        student_scores = {student: getStudentEngagement(student) for student in students}
+    scores = student_scores.values()
+    overall_average = sum(scores) / len(scores)
+    indices = findClosestPermutation(scores, overall_average, len(scores), group_size)
+
+    # correctly shuffled scores
+    scores = np.array(scores)[indices]
+    scores = np.array_split(scores, len(scores) / group_size)
+    return scores.tolist()
+
+
+
+
+

@@ -4,13 +4,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Coding Lab | Exercise</title>
-  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <title>Coding Lab | Grouping</title>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;1,100;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{% static 'css/layout.css' %}">
-  <link rel="stylesheet" href="{% static 'css/tutorial_statistics.css' %}">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>
+  <link rel="stylesheet" href="{% static 'css/grouping.css' %}">
 </head>
 <body>
 
@@ -26,7 +23,7 @@
   </div>
 
   <div class="sidenav-link active">
-    <a href="{% url 'classes' %}"></a>
+    <a href="{% url 'classes' %}">
       <div class="navi-icon"><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 640 512" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M208 352c-2.39 0-4.78.35-7.06 1.09C187.98 357.3 174.35 360 160 360c-14.35 0-27.98-2.7-40.95-6.91-2.28-.74-4.66-1.09-7.05-1.09C49.94 352-.33 402.48 0 464.62.14 490.88 21.73 512 48 512h224c26.27 0 47.86-21.12 48-47.38.33-62.14-49.94-112.62-112-112.62zm-48-32c53.02 0 96-42.98 96-96s-42.98-96-96-96-96 42.98-96 96 42.98 96 96 96zM592 0H208c-26.47 0-48 22.25-48 49.59V96c23.42 0 45.1 6.78 64 17.8V64h352v288h-64v-64H384v64h-76.24c19.1 16.69 33.12 38.73 39.69 64H592c26.47 0 48-22.25 48-49.59V49.59C640 22.25 618.47 0 592 0z"></path></svg></div>
       My Classes
     </a>
@@ -64,66 +61,44 @@
   </div>
 </div>
 
+<!-- C O N T E N T -->
 <div class="content">
   <nav class="content--nav">
-    <h1 class="content--nav-title">Lesson {{ lesson.order }}: {{ lesson.title }}</h1>
+    <h1 class="content--nav-title">Exercise {{ exercise.order }}: {{ exercise.title }}</h1>
   </nav>
-  <div class="feedback-bar">
-    <button class="feedback-btn" id="feedback-btn" onclick="handleOpenFeedback(event)">Feedback</button>
-  </div>
   <div class="content--content">
-    <div class="barchart-container">
-      <p class="chart-title">Completion progress of each unit</p>
-      <div style="height: 400px; width: 900px; margin: 0 auto;">
-        <canvas id="myChart" width="400" height="400"></canvas>
-      </div>
+    <div>
+      <p>Automatic assignment grouping will produce balanced assignment grouping based on a certain measured criteria.</p>
+      <p>Currently, Engagement and Skills criteria are available.</p>
+      <p>These criteria are determined based on activities and interactions on the platform.</p>
+      <p>Some of the tracked activities include login events, exercise attempts, tutorial completion, feedback, and etc.</p>
+      <p>Read more how we determine students' engagement and skills.</p>
+      <p>This class has {{ students|length }} students.</p>
+    </div>
+    <label for="criteria-select" class="criteria-label">Which criteria do you want to be balance in a group?</label>
+    <select name="criteria" id="criteria-select">
+      <option value="E">Engagement</option>
+      <option value="S">Skill</option>
+    </select>
+    <div class="btns">
+      <button class="generate-btn">Generate grouping</button>
+      <button class="pdf-btn" id="pdf-btn" onclick="printDiv({divId: 'pdf-btn', title: 'pdf-btn'})">Download as PDF</button>
     </div>
   </div>
 </div>
 
-
 <script type="text/javascript">
-var randomColorGenerator = function () { 
-    return '#' + (Math.random().toString(16) + '0000000').slice(2, 8); 
-};
+function printDiv({divId, title}) {
+  let mywindow = window.open('', 'PRINT', 'height=650,width=900,top=100,left=150');
 
-(function() {
-  var ctx = document.getElementById('myChart');
-  var labels = [{% for lesson in completionPercentages.keys %} "{{ lesson.title }}", {% endfor %}];
-  var data = [{% for percentage in completionPercentages.values %} "{{ percentage }}", {% endfor %}];
-  var backgroundColor = [{% for percentage in completionPercentages.values %} randomColorGenerator(), {% endfor %}];
-  var myChart = new Chart(ctx, {
-      type: 'horizontalBar',
-      data: {
-          labels: labels,
-          datasets: [
-            {
-              label: "Completion progress",
-              backgroundColor: backgroundColor,
-              data: data,
-            }
-          ]
-      },
-      options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          scales: {
-              yAxes: [{
-                  ticks: {
-                      beginAtZero: true
-                  }
-              }],
-              xAxes: [{
-                ticks: {
-                  max: 100,
-                  min: 0,
-                  stepSize: 10,
-                }
-              }]
-          }
-      }
-  });
-})();
+  mywindow.document.write(`<html><head><title>${title}</title>`);
+  mywindow.document.write('</head><body >');
+  mywindow.document.write(document.getElementById(divId).innerHTML);
+  mywindow.document.write('</body></html>');
+  mywindow.document.close(); // necessary for IE >= 10
+  mywindow.focus(); // necessary for IE >= 10*/
+  mywindow.print();
+  return true;
+}
 </script>
-
 </body>

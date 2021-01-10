@@ -459,6 +459,7 @@ def feedback(request, id, assignment_id):
         exercise_feedback.save()
     return JsonResponse({'successful': True})
 
+
 @require_GET
 def get_solutions(request, id, assignment_id):
     solutions = ExerciseSolution.objects.filter(exercise__id=id)
@@ -473,4 +474,12 @@ def get_solutions(request, id, assignment_id):
         response_arr.append(response)
         
     return JsonResponse(response_arr, safe=False)
-    
+
+
+@login_required
+def grouping(request, class_id):
+    students = StudentProfile.objects.filter(class_enrolled__id=class_id)
+    context = {
+        'students': students
+    }
+    return render(request, 'grouping.html', context)
