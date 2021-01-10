@@ -1,30 +1,30 @@
 ## Screenshots, Input & Output
 This page contains screenshots, input & output of:
 
-**Account Module**
+[**Account Module**](https://github.com/maxosen/codinglab-1/blob/main/documentation/input-output.md#account-module)
 
-* Login
-* Registration
+* [Login](https://github.com/maxosen/codinglab-1/blob/main/documentation/input-output.md#login)
+* [Registration](https://github.com/maxosen/codinglab-1/blob/main/documentation/input-output.md#registration)
 
 <br>
 
-**Tutorial Editor Module**
+[**Tutorial Editor Module**](https://github.com/maxosen/codinglab-1/blob/main/documentation/input-output.md#tutorial-editor-module)
 
 * [Lesson Editor](https://github.com/maxosen/codinglab-1/blob/main/documentation/input-output.md#lesson-editor)
-* Exercise Editor
+* [Exercise Editor](https://github.com/maxosen/codinglab-1/blob/main/documentation/input-output.md#exercise-editor)
 
 <br>
 
-**Tutorial and Exercise Module**
+[**Tutorial and Exercise Module**](https://github.com/maxosen/codinglab-1/blob/main/documentation/input-output.md#tutorial-and-exercise-module)
 
-* Lesson
-* Exercise
+* [Lesson Quick Exercise](https://github.com/maxosen/codinglab-1/blob/main/documentation/input-output.md#lesson-quick-exercise)
+* [Programming Exercise](https://github.com/maxosen/codinglab-1/blob/main/documentation/input-output.md#programming-exercise)
 
 <br>
 
-**Feedback, Behaviour and Analytics Module**
+[**Feedback, Behaviour and Analytics Module**](https://github.com/maxosen/codinglab-1/blob/main/documentation/input-output.md#feedback-behavior-and-analytics-module)
 
-* Feedback Form
+* [Feedback Form](https://github.com/maxosen/codinglab-1/blob/main/documentation/input-output.md#feedback)
 * Analytics
 
 ## Account Module
