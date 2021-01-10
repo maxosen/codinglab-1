@@ -7,7 +7,7 @@ from django.http import JsonResponse
 from django.views.decorators.http import require_POST, require_GET
 
 from .forms import TutorialForm, LessonForm, LoginForm, RegistrationForm, StudentProfileForm, InstructorProfileForm, ExerciseForm
-from .models import Assignment, ExerciseFeedback, ExerciseSubmissionEvent, LessonFeedback, Tutorial, Lesson, Exercise, StudentProfile, InstructorProfile, Class, LessonProgress, ExerciseProgress, ExerciseSolution
+from .models import Assignment, ExerciseFeedback, ExerciseSubmissionEvent, LessonFeedback, Tutorial, Lesson, Exercise, StudentProfile, InstructorProfile, Class, LessonProgress, ExerciseProgress, ExerciseSolution, LoginEvent
 from .analytics import get_overall_completion_rate, get_tutorial_progress, get_completion_percentages, groupStudents
 from .utils import run_testcases, is_testcases_pass
 
@@ -388,6 +388,10 @@ def login_view(request):
 
                     if role_matching:
                         login(request, user)
+                        if cd['role'] == 'S':
+                            student = StudentProfile.objects.get(user=user)
+                            event = LoginEvent(student=student)
+                            event.save()
                         return redirect('classes', permanent=True)
                     else:
                         context = {
