@@ -222,3 +222,22 @@ class ExerciseFeedback(models.Model):
     rating = models.IntegerField()
     
 
+class LoginEvent(models.Model):
+    student = models.ForeignKey(StudentProfile, on_delete=models.CASCADE)
+    time = models.DateField(auto_now_add=True)
+
+
+class ExerciseSubmissionEvent(models.Model):
+    assignment = models.ForeignKey(Assignment, on_delete=models.CASCADE)
+    exercise = models.ForeignKey(Exercise, on_delete=models.CASCADE)
+    frequency = models.IntegerField
+    duration = models.FloatField()
+    result = models.BooleanField()
+
+
+class LessonSubmissionEvent(models.Model):
+    assignment = models.ForeignKey(Assignment, on_delete=models.CASCADE)
+    lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE)
+    frequency = models.IntegerField
+    duration = models.FloatField()
+    result = models.BooleanField()
