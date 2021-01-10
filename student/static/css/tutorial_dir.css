@@ -26,9 +26,12 @@
 
 .tutorial-card--btns {
   display: flex;
+  justify-content: space-between;
+  padding: 0 20px;
+  width: 100%;
   position: absolute;
-  bottom: 16px;
-  right: 24px;
+  left: 0;
+  bottom: 18px;
 }
 
 .tutorial-card--btn {

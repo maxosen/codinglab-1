@@ -1,3 +1,4 @@
+from student.analytics import getCompletionPercentages, getTutorialProgress
 from django.http.response import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
@@ -7,6 +8,7 @@ from django.views.decorators.http import require_POST, require_GET
 
 from .forms import TutorialForm, LessonForm, LoginForm, RegistrationForm, StudentProfileForm, InstructorProfileForm, ExerciseForm
 from .models import Assignment, ExerciseFeedback, LessonFeedback, Tutorial, Lesson, Exercise, StudentProfile, InstructorProfile, Class, LessonProgress, ExerciseProgress, ExerciseSolution
+from .analytics import getOverallCompletionRate, getTutorialProgress, getCompletionPercentages
 from .utils import run_testcases, is_testcases_pass
 
 import json
@@ -21,19 +23,16 @@ def home(request):
 @login_required
 def tutorial_statistics(request, class_id, tutorial_id):
     profile = InstructorProfile.objects.get(user=request.user)
+    completionPercentages = getCompletionPercentages(
+                                getTutorialProgress(tutorial_id)
+                            )
+    overallCompletionPercent = getOverallCompletionRate(completionPercentages)
     tutorial = Tutorial.objects.get(id=tutorial_id)
-    assignments = Assignment.objects.filter(tutorial=tutorial)
-    student_progresses = []
-    if tutorial.tutorial_type == Tutorial.LESSON:
-        for assignment in assignments:
-            student_progress = LessonProgress.objects.filter(assignment__id=assignment.id)
-            student_progresses.append(student_progress)
-    else:
-        for assignment in assignments:
-            student_progress = ExerciseProgress.objects.filter(assignment__id=assignment.id)
-            student_progresses.append(student_progress)
     
     context = {
+        'tutorial': tutorial,
+        'completionPercentages': completionPercentages,
+        'overallCompletionRate': overallCompletionPercent,
         'profile': profile,
     }
     return render(request, 'tutorial_statistics.html', context)

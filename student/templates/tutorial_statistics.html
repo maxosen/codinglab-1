@@ -10,13 +10,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{% static 'css/layout.css' %}">
   <link rel="stylesheet" href="{% static 'css/tutorial_statistics.css' %}">
-  <script src="https://d3js.org/d3.v6.min.js"></script>
-  <style type="text/css">
-    #barchart{
-    width:300px;
-    height:200px;
-    }
-  </style>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>
 </head>
 <body>
 
@@ -78,28 +72,57 @@
     <button class="feedback-btn" id="feedback-btn" onclick="handleOpenFeedback(event)">Feedback</button>
   </div>
   <div class="content--content">
-    <div id="barchart"></div>
+    {{ completionPercentages }}
+    {{ overallCompletionRate }}
+    <div style="height: 400px; width: 900px;">
+      <canvas id="myChart" width="400" height="400"></canvas>
+    </div>
   </div>
 </div>
 
 
 
 <script type="text/javascript">
-var widthOfRect = 0;
+var randomColorGenerator = function () { 
+    return '#' + (Math.random().toString(16) + '0000000').slice(2, 8); 
+};
 
-(function(){
-  var id="barchart";
-  height = document.getElementById('barchart').height();
-  width = document.getElementById('barchart').width();
-  xAxisTicks=6;
-  data=[{"yAxisValue":"United States Of America","xAxisValue":200},{"yAxisValue":"United Kingdom","xAxisValue":500},{"yAxisValue":"France","xAxisValue":50},{"yAxisValue":"India","xAxisValue":150},{"yAxisValue":"Japan","xAxisValue":600},{"yAxisValue":"China","xAxisValue":550},{"yAxisValue":"SriLanka","xAxisValue":350}];
-  chartColor= ["#204492", "#8DBBDC","#676767","#55B957","#2CB1DC","#E9691E","#E39A20"];
-  margin = { "Left": 40, "Right": 20, "Top": 20, "Bottom": 30 };
-  animationDelay=500;
-  toolTipYPosition=40;
-  var chart = new HorizontalBarChart({ "id": id, "height": height, "width": width,"xAxisTicks":xAxisTicks,"animationDelay": animationDelay, "data": data, "chartColor": chartColor, "margin":margin, "toolTipYPosition":toolTipYPosition} );
-  // var chart = new GaugeChart({"id": id} );
-  chart.createHorizontalBarChart();
+(function() {
+  var ctx = document.getElementById('myChart');
+  var labels = [{% for lesson in completionPercentages.keys %} "{{ lesson.title }}", {% endfor %}];
+  var data = [{% for percentage in completionPercentages.values %} "{{ percentage }}", {% endfor %}];
+  var backgroundColor = [{% for percentage in completionPercentages.values %} randomColorGenerator(), {% endfor %}];
+  var myChart = new Chart(ctx, {
+      type: 'horizontalBar',
+      data: {
+          labels: labels,
+          datasets: [
+            {
+              label: "la",
+              backgroundColor: backgroundColor,
+              data: data,
+            }
+          ]
+      },
+      options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+              yAxes: [{
+                  ticks: {
+                      beginAtZero: true
+                  }
+              }],
+              xAxes: [{
+                ticks: {
+                  max: 100,
+                  min: 0,
+                  stepSize: 10,
+                }
+              }]
+          }
+      }
+  });
 })();
 </script>
 

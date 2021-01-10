@@ -73,15 +73,20 @@
       <div class="tutorial-card--content">
         <p class="tutorial-card--title">{{ tutorial.title }}</p>
         <div class="tutorial-card--btns">
-          <button
-            onclick="assign(event)"
-            data-tutorial-id="{{ tutorial.id }}"
-            class="tutorial-card--btn">Assign</button>
-          <a
-            class="tutorial-card--btn"
-            href="{% url 'editor' class_id=request.resolver_match.kwargs.class_id tutorial_id=tutorial.id %}">
-            Edit
-          </a>
+          <div>
+            <a href="{% url 'tutorial_statistics' class_id=request.resolver_match.kwargs.class_id tutorial_id=tutorial.id %}" class="tutorial-card--btn" style="margin-left: 0;">Statistics</a>            
+          </div>
+          <div style="display: flex;">
+            <button
+              onclick="assign(event)"
+              data-tutorial-id="{{ tutorial.id }}"
+              class="tutorial-card--btn">Assign</button>
+            <a
+              class="tutorial-card--btn"
+              href="{% url 'editor' class_id=request.resolver_match.kwargs.class_id tutorial_id=tutorial.id %}">
+              Edit
+            </a>
+          </div>
         </div>
       </div>
     </div>

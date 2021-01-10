@@ -159,6 +159,36 @@ Form / Editor for creating an exercise
 
 Sample Inputs for creating an exercise
 
+**Expected Input**
+
+A list of names of students to assign the tutorial to.
+
+**Input Validation**
+
+Inputs must be a list of names that are provided from the choices.
+* Enforced at HTML form validation.
+
+**Expected Output**
+
+A new row in the `Assignment` PostgreSQL table with following columns or fields:
+
+1. ID `PRIMARY KEY`
+2. STUDENT `FOREIGN KEY`
+3. TUTORIAL `FOREIGN KEY`
+4. PROGRESS `INTEGER`
+5. IS_OPTIONAL `BOOLEAN`
+
+### Tutorial Assignment
+<img src="markdown-images/assignment-screenshot.png" style="width: 500px;">
+
+Form for assigning tutorials or exercises to students
+
+<br>
+
+<img src="markdown-images/assignment-sample-input.png" style="width: 500px;">
+
+
+
 ## Tutorial and Exercise Module
 ### Lesson Quick Exercise
 <img src="markdown-images/lesson-screenshot.png" style="width: 500px;">
