@@ -175,13 +175,11 @@ class Assignment(models.Model):
                 progress.save()
         return assignment
 
-
     def create_exercises_progress(self):
         exercises = Exercise.objects.filter(tutorial=self.tutorial)
         progresses = [ExerciseProgress(exercise=exercise, assignment=self)
                     for exercise in exercises]
         return progresses
-
 
     def create_lessons_progress(self):
         lessons = Lesson.objects.filter(tutorial=self.tutorial)

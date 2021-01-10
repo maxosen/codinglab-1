@@ -7,8 +7,8 @@ from django.http import JsonResponse
 from django.views.decorators.http import require_POST, require_GET
 
 from .forms import TutorialForm, LessonForm, LoginForm, RegistrationForm, StudentProfileForm, InstructorProfileForm, ExerciseForm
-from .models import Assignment, ExerciseFeedback, LessonFeedback, Tutorial, Lesson, Exercise, StudentProfile, InstructorProfile, Class, LessonProgress, ExerciseProgress, ExerciseSolution
-from .analytics import getOverallCompletionRate, getTutorialProgress, getCompletionPercentages
+from .models import Assignment, ExerciseFeedback, ExerciseSubmissionEvent, LessonFeedback, Tutorial, Lesson, Exercise, StudentProfile, InstructorProfile, Class, LessonProgress, ExerciseProgress, ExerciseSolution
+from .analytics import get_overall_completion_rate, get_tutorial_progress, get_completion_percentages, groupStudents
 from .utils import run_testcases, is_testcases_pass
 
 import json
@@ -26,7 +26,7 @@ def tutorial_statistics(request, class_id, tutorial_id):
     completionPercentages = getCompletionPercentages(
                                 getTutorialProgress(tutorial_id)
                             )
-    overallCompletionPercent = getOverallCompletionRate(completionPercentages)
+    overallCompletionPercent = get_overall_completion_rate(completionPercentages)
     tutorial = Tutorial.objects.get(id=tutorial_id)
     
     context = {
@@ -175,6 +175,7 @@ def exercise(request, id, assignment_id):
     }
     return render(request, 'exercise.html', context)
 
+
 @require_POST
 def submit_exercise(request, id, assignment_id):
     data = json.loads(request.body.decode("utf-8"))
@@ -193,6 +194,19 @@ def submit_exercise(request, id, assignment_id):
         solution = ExerciseSolution(exercise=exercise, assignment=assignment, solution=code)
         solution.save()
     return JsonResponse(results, safe=False)
+
+
+@require_POST
+def record_exercise_attempts(request, id, assignment_id):
+    data = json.loads(request.body.decode("utf-8"))
+    num_of_attempts = data['attempts']
+    is_pass = data['pass']
+    duration = data['duration']
+    assignment = Assignment.objects.get(id=assignment_id)
+    exercise = Exercise.objects.get(id=id)
+    event = ExerciseSubmissionEvent(assignment=assignment, exercise=exercise, frequency=num_of_attempts, duration=duration, result=is_pass)
+    return JsonResponse({'success': True})
+
 
 @require_POST
 def submit_lesson(request, id, assignment_id):
@@ -475,11 +489,24 @@ def get_solutions(request, id, assignment_id):
         
     return JsonResponse(response_arr, safe=False)
 
-
+'''
+Pass an array of Student Profiles which is a 2-dimensional array.
+Example Output:
+[
+    [Student Profile 2, Student Profile 8, Student Profile 5],
+    [Student Profile 3, Student Profile 1, Student Profile 7],
+    ...
+]
+'''
 @login_required
 def grouping(request, class_id):
     students = StudentProfile.objects.filter(class_enrolled__id=class_id)
+    if request.method == "POST":
+        group_size = int(request.POST['size'])
+        criteria = request.POST['criteria']
+        students = groupStudents(students, group_size, criteria)
     context = {
         'students': students
     }
     return render(request, 'grouping.html', context)
+

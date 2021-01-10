@@ -188,6 +188,54 @@
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.js"></script>
 <script>
+var attempts = 0;
+var attempt_pass = false;
+let startDate = new Date();
+let elapsedTime = 0;
+
+window.onbeforeunload = function() {
+  var requestBody = {
+    'attempts': attempts,
+    'pass': attempt_pass,
+    'duration': elapsedTime
+  }
+
+  var url = "{% url 'record_exercise_attempts' assignment_id=request.resolver_match.kwargs.assignment_id id=request.resolver_match.kwargs.id %}";
+
+  var request = new Request(
+    url,
+    {
+      method: 'POST',
+      headers: {'X-CSRFToken': csrfToken},
+      body: JSON.stringify(requestBody),
+      mode: 'same-origin',
+    }
+  );
+  fetch(request)
+    .then(response => response.json())
+};
+
+const focus = function() {
+    startDate = new Date();
+};
+
+const blur = function() {
+    const endDate = new Date();
+    const spentTime = endDate.getTime() - startDate.getTime();
+    elapsedTime += spentTime;
+};
+
+const beforeunload = function() {
+    const endDate = new Date();
+    const spentTime = endDate.getTime() - startDate.getTime();
+    elapsedTime += spentTime;
+    // elapsedTime contains the time spent on page in milliseconds
+};
+
+window.addEventListener('focus', focus);
+window.addEventListener('blur', blur);
+window.addEventListener('beforeunload', beforeunload);
+
 document.getElementById('markdown').innerHTML =
   marked('{{ exercise.question|escapejs }}');
 
@@ -202,6 +250,7 @@ var myCodeMirror = CodeMirror(editorEl, {
 
 function submit() {
   // PARAM=request.resolver_match.kwargs.PARAM
+  attempts += 1;
   var usercode = myCodeMirror.getValue()
   var url = "{% url 'submit_exercise' assignment_id=request.resolver_match.kwargs.assignment_id id=request.resolver_match.kwargs.id %}";
   var csrfToken = Cookies.get('csrftoken');
@@ -217,6 +266,8 @@ function submit() {
       mode: 'same-origin',
     }
   );
+  // TODO: showResult(pass) will displays 'Fail' when
+  // TODO: one or more test cases pass, but others fail
   fetch(request)
     .then(response => response.json())
     .then(data => {
@@ -232,6 +283,8 @@ function submit() {
         }
         showTestcaseResult(data);
       }
+      if (pass)
+        attempt_pass = pass;
       showResult(pass);
     });
 }
