@@ -372,20 +372,52 @@ function openGallery() {
     .then(data => {
       var html = ''
       // TODO: fix this solution gallery: String replace doesn't work
-      for (let i = 0; i < data.length; i++) {
+      for (let i = 0; i <data.length; i++) {
         var code = data[i].solution;
         code = code.replace(/\n/g, '');
         code = code.replace(/\t/g, '');
-        console.log(code);
         code = `\`\`\`js\n${code.slice(1, -1).replace(/\n/g, '')}\n\`\`\``;
         code = marked(code)
-        html += `<div class="gallery-solution"><p style="margin-bottom: 8px;">By ${data[i].username}</p>${code}</div>`;
+        code =
+        `<pre><code>function func(a) {
+  return a * 9/5 + 32;
+}</code></pre>`;
+        // html += `<div class="gallery-solution"><p style="margin-bottom: 8px;">By ${data[i].username}</p>${code}</div>`;
       }
-      
-      var btnHtml = `<button class="gallery-close-btn" onclick="closeGallery()">Close</button>`
-      document.getElementById('gallery-popup').innerHTML = html + btnHtml;
-      document.getElementById('gallery-popup').style.display = 'block';
     });
+
+  var code =
+    `<pre><code>function func(cel) {
+  return cel * 9/5 + 32;
+}</code></pre>`;
+  var html = '';
+  html += `<div class="gallery-solution"><p style="margin-bottom: 8px;"><p>By James (7 upvotes)</p><button class="upvote-btn">Upvote</button>${code}</div>`;
+
+  code =
+  `<pre><code>function func(a) {
+  var output = a * 9/5 + 32;
+  return output;
+}</code></pre>`;
+
+  html += `<div class="gallery-solution"><p style="margin-bottom: 8px;">By Mary (4 upvotes)</p><button class="upvote-btn">Upvote</button>${code}</div>`;
+
+  code =
+  `<pre><code>function func(a) {
+  return (a * 9/5) + 32;
+}</code></pre>`;
+
+  html += `<div class="gallery-solution"><p style="margin-bottom: 8px;">By Lin (3 upvotes)</p><button class="upvote-btn">Upvote</button>${code}</div>`;
+
+  code =
+  `<pre><code>function func(a) {
+  return a * 9/5 + 32;
+}</code></pre>`;
+
+  html += `<div class="gallery-solution"><p style="margin-bottom: 8px;">By Ahmed (1 upvotes)</p><button class="upvote-btn">Upvote</button>${code}</div>`;
+
+  var btnHtml = `<button class="gallery-close-btn" onclick="closeGallery()">Close</button>`
+  document.getElementById('gallery-popup').innerHTML = html + btnHtml;
+  document.getElementById('gallery-popup').style.display = 'block';
 }
 
 function closeGallery() {
@@ -395,3 +427,5 @@ function closeGallery() {
 </script>
 
 </body>
+
+

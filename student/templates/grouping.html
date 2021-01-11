@@ -80,9 +80,59 @@
       <option value="E">Engagement</option>
       <option value="S">Skill</option>
     </select>
+    <label for="criteria-select" class="criteria-label">How many students in a group?</label>
+    <select name="criteria" id="criteria-select">
+      <option value="E">1</option>
+      <option value="S">2</option>
+      <option value="S">3</option>
+    </select>
     <div class="btns">
       <button class="generate-btn">Generate grouping</button>
-      <button class="pdf-btn" id="pdf-btn" onclick="printDiv({divId: 'pdf-btn', title: 'pdf-btn'})">Download as PDF</button>
+      <button class="pdf-btn" id="pdf-btn" onclick="printDiv({divId: 'pdf-content', title: 'pdf-btn'})">Download as PDF</button>
+    </div>
+    <div id="pdf-content">
+      <p>Group 1</p>
+      <ul>
+        <li>Mary</li>
+        <li>James</li>
+        <li>Ahmed</li>
+      </ul>
+
+      <p>Group 2</p>
+      <ul>
+        <li>Lily</li>
+        <li>Aang</li>
+        <li>Sokka</li>
+      </ul>
+      
+      <p>Group 3</p>
+      <ul>
+        <li>Patrick</li>
+        <li>Sandry</li>
+        <li>Larry</li>
+      </ul>
+
+      <p>Group 4</p>
+      <ul>
+        <li>Harry</li>
+        <li>Bob</li>
+        <li>Jimmy</li>
+      </ul>
+      
+      <p>Group 5</p>
+      <ul>
+        <li>Danny</li>
+        <li>Tucker</li>
+        <li>Sam</li>
+      </ul>
+      
+      <p>Group 6</p>
+      <ul>
+        <li>Trump</li>
+        <li>Biden</li>
+        <li>Donald</li>
+      </ul>
+      
     </div>
   </div>
 </div>
@@ -92,7 +142,7 @@ function printDiv({divId, title}) {
   let mywindow = window.open('', 'PRINT', 'height=650,width=900,top=100,left=150');
 
   mywindow.document.write(`<html><head><title>${title}</title>`);
-  mywindow.document.write('</head><body >');
+  mywindow.document.write('</head><body>');
   mywindow.document.write(document.getElementById(divId).innerHTML);
   mywindow.document.write('</body></html>');
   mywindow.document.close(); // necessary for IE >= 10

@@ -68,17 +68,45 @@
   <nav class="content--nav">
     <h1 class="content--nav-title">Lesson {{ lesson.order }}: {{ lesson.title }}</h1>
   </nav>
-  <div class="feedback-bar">
-    <button class="feedback-btn" id="feedback-btn" onclick="handleOpenFeedback(event)">Feedback</button>
-  </div>
   <div class="content--content">
     <div class="barchart-container">
-      <p class="chart-title">Completion progress of each unit</p>
+      <p class="chart-title">Completion progress of each unit (In percentages)</p>
       <div style="height: 400px; width: 900px; margin: 0 auto;">
         <canvas id="myChart" width="400" height="400"></canvas>
       </div>
     </div>
+    <div class="barchart-container">
+      <p class="chart-title">How many students give their feedbacks?</p>
+      <div style="height: 400px; width: 900px; margin: 0 auto;">
+        <canvas id="feedback-bar-chart" width="400" height="400"></canvas>
+      </div>
+    </div>
   </div>
+  <div class="barchart-container">
+    <p class="chart-title">Average exercise submission attempts of each lesson</p>
+    <div style="height: 400px; width: 900px; margin: 0 auto;">
+      <canvas id="attempt-bar-chart" width="400" height="400"></canvas>
+    </div>
+  </div>
+  
+  <h3>Detected outliers</h3>
+  <div class="container">
+    <p>The following students might be having problems with Lesson: Accessing Array Elements</p>
+    <ul>
+      <li>James (25 Submission Attempts)</li>
+      <li>Mary  (21 Submission Attempts)</li>
+      <li>Jones  (15 Submission Attempts)</li>
+    </ul>
+  </div>
+  <div class="container">
+    <p>The following students might be having problems with Lesson: Removing and Adding Array Elements</p>
+    <ul>
+      <li>Anson (25 Submission Attempts)</li>
+      <li>May  (35 Submission Attempts)</li>
+      <li>Jones  (15 Submission Attempts)</li>
+    </ul>
+  </div>
+</div>
 </div>
 
 
@@ -116,6 +144,82 @@ var randomColorGenerator = function () {
               xAxes: [{
                 ticks: {
                   max: 100,
+                  min: 0,
+                  stepSize: 10,
+                }
+              }]
+          }
+      }
+  });
+})();
+
+(function() {
+  var ctx = document.getElementById('feedback-bar-chart');
+  var labels = [{% for lesson in completionPercentages.keys %} "{{ lesson.title }}", {% endfor %}];
+  var data = [3, 1, 4];
+  var backgroundColor = [{% for percentage in completionPercentages.values %} randomColorGenerator(), {% endfor %}];
+  var myChart = new Chart(ctx, {
+      type: 'horizontalBar',
+      data: {
+          labels: labels,
+          datasets: [
+            {
+              label: "Number of students",
+              backgroundColor: backgroundColor,
+              data: data,
+            }
+          ]
+      },
+      options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+              yAxes: [{
+                  ticks: {
+                      beginAtZero: true
+                  }
+              }],
+              xAxes: [{
+                ticks: {
+                  max: 9,
+                  min: 0,
+                  stepSize: 10,
+                }
+              }]
+          }
+      }
+  });
+})();
+
+(function() {
+  var ctx = document.getElementById('attempt-bar-chart');
+  var labels = [{% for lesson in completionPercentages.keys %} "{{ lesson.title }}", {% endfor %}];
+  var data = [7, 3, 8];
+  var backgroundColor = [{% for percentage in completionPercentages.values %} randomColorGenerator(), {% endfor %}];
+  var myChart = new Chart(ctx, {
+      type: 'horizontalBar',
+      data: {
+          labels: labels,
+          datasets: [
+            {
+              label: "Number of attempts",
+              backgroundColor: backgroundColor,
+              data: data,
+            }
+          ]
+      },
+      options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+              yAxes: [{
+                  ticks: {
+                      beginAtZero: true
+                  }
+              }],
+              xAxes: [{
+                ticks: {
+                  smax: 20,
                   min: 0,
                   stepSize: 10,
                 }

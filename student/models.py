@@ -186,6 +186,9 @@ class Assignment(models.Model):
         progresses = [LessonProgress(lesson=lesson, assignment=self)
                     for lesson in lessons]
         return progresses
+    
+    def __str__(self):
+        return f'{self.tutorial.title}: {self.student.user.username}'
 
 
 class LessonProgress(models.Model):

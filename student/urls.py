@@ -17,8 +17,8 @@ urlpatterns = [
     # POST path for submitting exercises / lessons
     path('tutorial/<int:assignment_id>/submit_exercise/<int:id>', views.submit_exercise, name='submit_exercise'),
     path('tutorial/<int:assignment_id>/submit_lesson/<int:id>', views.submit_lesson, name='submit_lesson'),
-    path('tutorial/<int:assignment_id>/record_exercise_attempts/<int:id>', views.record_attempts, name='record_exercise_attempts'),
-    path('tutorial/<int:assignment_id>/record_tutorial_attempts/<int:id>', views.record_attempts, name='record_tutorial_attempts'),
+    path('tutorial/<int:assignment_id>/record_exercise_attempts/<int:id>', views.record_exercise_attempts, name='record_exercise_attempts'),
+    path('tutorial/<int:assignment_id>/record_lesson_attempts/<int:id>', views.record_lesson_attempts, name='record_tutorial_attempts'),
     path('feedback/<int:assignment_id>/<int:id>', views.feedback, name='feedback'),
     # GET path for getting solutions
     path('get_solutions/<int:assignment_id>/<int:id>', views.get_solutions, name='get_solutions'),

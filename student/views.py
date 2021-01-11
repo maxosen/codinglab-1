@@ -7,8 +7,8 @@ from django.http import JsonResponse
 from django.views.decorators.http import require_POST, require_GET
 
 from .forms import TutorialForm, LessonForm, LoginForm, RegistrationForm, StudentProfileForm, InstructorProfileForm, ExerciseForm
-from .models import Assignment, ExerciseFeedback, ExerciseSubmissionEvent, LessonFeedback, Tutorial, Lesson, Exercise, StudentProfile, InstructorProfile, Class, LessonProgress, ExerciseProgress, ExerciseSolution, LoginEvent
-from .analytics import get_overall_completion_rate, get_tutorial_progress, get_completion_percentages, groupStudents
+from .models import Assignment, ExerciseFeedback, ExerciseSubmissionEvent, LessonFeedback, LessonSubmissionEvent, Tutorial, Lesson, Exercise, StudentProfile, InstructorProfile, Class, LessonProgress, ExerciseProgress, ExerciseSolution, LoginEvent
+from .analytics import get_overall_completion_rate, groupStudents
 from .utils import run_testcases, is_testcases_pass
 
 import json
@@ -205,6 +205,20 @@ def record_exercise_attempts(request, id, assignment_id):
     assignment = Assignment.objects.get(id=assignment_id)
     exercise = Exercise.objects.get(id=id)
     event = ExerciseSubmissionEvent(assignment=assignment, exercise=exercise, frequency=num_of_attempts, duration=duration, result=is_pass)
+    event.save()
+    return JsonResponse({'success': True})
+
+
+@require_POST
+def record_lesson_attempts(request, id, assignment_id):
+    data = json.loads(request.body.decode("utf-8"))
+    num_of_attempts = data['attempts']
+    is_pass = data['pass']
+    duration = data['duration']
+    assignment = Assignment.objects.get(id=assignment_id)
+    lesson = Lesson.objects.get(id=id)
+    event = LessonSubmissionEvent(assignment=assignment, lesson=lesson, frequency=num_of_attempts, duration=duration, result=is_pass)
+    event.save()
     return JsonResponse({'success': True})
 
 

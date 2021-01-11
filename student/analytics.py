@@ -73,6 +73,7 @@ def get_overall_completion_rate(percentages: dict) -> float:
 def get_student_engagement(student: StudentProfile) -> float:
     FEEDBACK_COMPLETION_WEIGHTAGE = 0.3
     TUTORIAL_COMPLETION_WEIGHTAGE = 0.7
+
     # GET MOST RECENT LOGIN
     # login_events = LoginEvent.objects.filter(student=student) \
     #                 .order_by('-time')
@@ -105,6 +106,7 @@ def get_student_engagement(student: StudentProfile) -> float:
             tutorial_completion_percentage * TUTORIAL_COMPLETION_WEIGHTAGE) / \
             (FEEDBACK_COMPLETION_WEIGHTAGE + TUTORIAL_COMPLETION_WEIGHTAGE)
     return score
+
 
 def get_student_skill(student: StudentProfile) -> float:
     # GET AVERAGE LESSON/EXERCISE SUBMISSION FREQUENCY

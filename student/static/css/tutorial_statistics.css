@@ -3,11 +3,27 @@
 }
 
 .barchart-container {
-
+  margin-bottom: 84px;
 }
 
 .chart-title {
   font-size: 18px;
   text-align: center;
   margin-bottom: 20px;
+}
+
+.container, h3 {
+  padding: 0 128px;  
+}
+
+h3 {
+  margin-bottom: 16px;
+}
+
+.container p {
+  margin-bottom: 8px;
+}
+
+.container {
+  margin-bottom: 48px;
 }
