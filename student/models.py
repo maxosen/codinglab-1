@@ -30,6 +30,8 @@ class StudentProfile(models.Model):
     class_enrolled = models.ManyToManyField(Class,
                                         related_name='enrolled_in',
                                         blank=True)
+    def __str__(self):
+        return f'{self.user.id}: {self.user.username}'
 
 
 class Tutorial(models.Model):
@@ -55,6 +57,9 @@ class Tutorial(models.Model):
     assignment = models.ManyToManyField(StudentProfile,
                                         through='Assignment',
                                         blank=True)
+    def __str__(self):
+        return f'{self.id}: {self.title}'
+
     def get_next_lesson(self, id):
         lessons = Lesson.objects.filter(tutorial=self)
         lessons_size = len(lessons)
@@ -157,6 +162,8 @@ class Assignment(models.Model):
     progress = models.IntegerField(default=0)
     is_optional = models.BooleanField(default=False)
 
+    def __str__(self):
+        return f'{self.id}: {self.tutorial.title} to {self.student.user.username}'
     # keep in mind this has a side effect
     # another possible solution might be to use a SAVE signal receiver
     @classmethod
@@ -196,17 +203,28 @@ class LessonProgress(models.Model):
     assignment = models.ForeignKey(Assignment, on_delete=models.CASCADE)
     completed = models.BooleanField(default=False)
 
+    def __str__(self):
+        return f'{self.id}: {self.lesson.title} by {self.assignment.student.user.username}: {self.completed}'
+    
+
 
 class ExerciseProgress(models.Model):
     exercise = models.ForeignKey(Exercise, on_delete=models.CASCADE)
     assignment = models.ForeignKey(Assignment, on_delete=models.CASCADE)
     completed = models.BooleanField(default=False)
 
+    def __str__(self):
+        return f'{self.id}: {self.exercise.title} by {self.assignment.student.user.username}: {self.completed}'
+
 
 class ExerciseSolution(models.Model):
     exercise = models.ForeignKey(Exercise, on_delete=models.CASCADE)
     assignment = models.ForeignKey(Assignment, on_delete=models.CASCADE)
     solution = models.TextField()
+
+    def __str__(self):
+        return f'{self.id}: {self.exercise.title} by {self.assignment.student.user.username}'
+
 
 
 class LessonFeedback(models.Model):
@@ -215,17 +233,29 @@ class LessonFeedback(models.Model):
     feedback = models.TextField()
     rating = models.IntegerField()
 
+    def __str__(self):
+        return f'{self.id}: {self.lesson.title} by {self.assignment.student.user.username}'
+
+
 
 class ExerciseFeedback(models.Model):
     exercise = models.ForeignKey(Exercise, on_delete=models.CASCADE)
     assignment = models.ForeignKey(Assignment, on_delete=models.CASCADE)
     feedback = models.TextField()
     rating = models.IntegerField()
+
+    def __str__(self):
+        return f'{self.id}: {self.lesson.title} by {self.assignment.student.user.username}'
+
     
 
 class LoginEvent(models.Model):
     student = models.ForeignKey(StudentProfile, on_delete=models.CASCADE)
     time = models.DateField(auto_now_add=True)
+
+    def __str__(self):
+        return f'{self.id}: {self.student.user.username} on {self.time}'
+
 
 
 class ExerciseSubmissionEvent(models.Model):
@@ -235,6 +265,10 @@ class ExerciseSubmissionEvent(models.Model):
     duration = models.FloatField()
     result = models.BooleanField()
 
+    def __str__(self):
+        return f'{self.id}: {self.assignment.student.user.username} on {self.exercise.title}'
+
+
 
 class LessonSubmissionEvent(models.Model):
     assignment = models.ForeignKey(Assignment, on_delete=models.CASCADE)
@@ -242,3 +276,6 @@ class LessonSubmissionEvent(models.Model):
     frequency = models.IntegerField
     duration = models.FloatField()
     result = models.BooleanField()
+
+    def __str__(self):
+        return f'{self.id}: {self.assignment.student.user.username} on {self.lesson.title}'

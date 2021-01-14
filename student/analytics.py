@@ -74,14 +74,6 @@ def get_student_engagement(student: StudentProfile) -> float:
     FEEDBACK_COMPLETION_WEIGHTAGE = 0.3
     TUTORIAL_COMPLETION_WEIGHTAGE = 0.7
 
-    # GET MOST RECENT LOGIN
-    # login_events = LoginEvent.objects.filter(student=student) \
-    #                 .order_by('-time')
-    # try:
-    #     last_login = login_events[0]
-    # except:
-    #     last_login = None
-
     # GET PERCENTAGES OF FEEDBACK COMPLETION
     number_of_lesson_feedbacks = len(LessonFeedback.objects.filter(assignment__student=student))
     number_of_exercise_feedbacks = len(ExerciseFeedback.objects.filter(assignment__student=student))
@@ -99,9 +91,6 @@ def get_student_engagement(student: StudentProfile) -> float:
     completed_exercise_percentage = len(ExerciseProgress.objects.filter(completed=True)) / number_of_assigned_exercises
     tutorial_completion_percentage = (completed_lesson_percentage + completed_exercise_percentage) / 2
 
-    # GET AVERAGE LESSON/EXERCISE SUBMISSION FREQUENCY
-    # average_lesson_freq = [submission.frequency for submission in LessonSubmissionEvent.objects.filter(assignment__student=student)]
-    # average_exercse_freq = [submission.frequency for submission in ExerciseSubmissionEvent.objects.filter(assignment__student=student)]
     score = (overall_feedback_percentage * FEEDBACK_COMPLETION_WEIGHTAGE + \
             tutorial_completion_percentage * TUTORIAL_COMPLETION_WEIGHTAGE) / \
             (FEEDBACK_COMPLETION_WEIGHTAGE + TUTORIAL_COMPLETION_WEIGHTAGE)
@@ -128,16 +117,18 @@ def get_student_skill(student: StudentProfile) -> float:
     else:
         return 0.2
     
-
+'''
+SSD: Sum of Squared Differences
+'''
 def shuffledSSD(scores: list, target: int, length: int, split_size: int):
     indices = np.arange(length)
     np.random.shuffle(indices)
     scores = np.array(scores)[indices]
     scores = np.array_split(scores, length / split_size)
     averages = [np.sum(score) for score in scores]
-    SSE = np.square(np.array(averages) - np.array(target))
-    SSE = np.sum(SSE)
-    return {indices: SSE}
+    SSD = np.square(np.array(averages) - np.array(target))
+    SSD = np.sum(SSD)
+    return {indices: SSD}
 
 
 '''

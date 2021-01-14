@@ -133,7 +133,7 @@ function closeCreatePopup() {
 function assign(e) {
   var tutorialId = e.currentTarget.dataset.tutorialId;
   var classId = '{{ request.resolver_match.kwargs.class_id }}';
-  var url = '/class/' + classId + '/tutorial/' + tutorialId + '/assignment_status';
+  var url = '/class/' + classId + '/tutorial/' + tutorialId + '/assignment_status/';
   var adyAssignedStudents = []
   var notAssignedStudents = []
   
@@ -172,7 +172,7 @@ function assign(e) {
       else
         studentAdyAssignedHtmlTitle = 'These students are already assigned with this tutorial:';
 
-      var postUrl = `/assign/${classId}/${tutorialId}`;
+      var postUrl = `/assign/${classId}/${tutorialId}/`;
 
       var assignFormHtml = `
         <p class="assign-form-title">Assign to students:</p>
