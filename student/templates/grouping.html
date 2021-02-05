@@ -8,6 +8,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;1,100;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{% static 'css/layout.css' %}">
   <link rel="stylesheet" href="{% static 'css/grouping.css' %}">
+  <script src="{% static 'utils.js' %}"></script>
 </head>
 <body>
 
@@ -47,13 +48,19 @@
       <img src="{{ profile.photo.url }}" alt="" class="profile-photo">
       <div class="profile-text-container">
         <p class="profile-username">{{ profile.user.username }}</p>
-        <p class="profile-role">Instructor</p>
+        <p class="profile-role">
+          {% if profile.role == 'I' %}
+            Instructor
+          {% else %}
+            Student
+          {% endif %}
+        </p>
       </div>
     </div>
   </div>
   <div class="widenav-links">
     <div class="widenav-link">
-      <a href="#">Class home</a>
+      <a href="{% url 'classes' %}">Class home</a>
     </div>
     <div class="widenav-link active">
       <a href="#">Tutorials</a>
@@ -64,7 +71,7 @@
 <!-- C O N T E N T -->
 <div class="content">
   <nav class="content--nav">
-    <h1 class="content--nav-title">Exercise {{ exercise.order }}: {{ exercise.title }}</h1>
+    <h1 class="content--nav-title">Automatic Assignment Grouping</h1>
   </nav>
   <div class="content--content">
     <div>
@@ -81,15 +88,18 @@
       <option value="S">Skill</option>
     </select>
     <label for="criteria-select" class="criteria-label">How many students in a group?</label>
-    <select name="criteria" id="criteria-select">
-      <option value="E">1</option>
-      <option value="S">2</option>
-      <option value="S">3</option>
+    <select name="size" id="groupsize-select">
+      <option value="3">3</option>
+      <option value="4">4</option>
+      <option value="5">5</option>
+      <option value="6">6</option>
     </select>
+    <input type="hidden" name="" value="">
     <div class="btns">
-      <button class="generate-btn">Generate grouping</button>
+      <button onclick="generateGroup()" class="generate-btn">Generate grouping</button>
       <button class="pdf-btn" id="pdf-btn" onclick="printDiv({divId: 'pdf-content', title: 'pdf-btn'})">Download as PDF</button>
     </div>
+    
     <div id="pdf-content">
       <p>Group 1</p>
       <ul>
@@ -138,6 +148,16 @@
 </div>
 
 <script type="text/javascript">
+var classnames = [{% for name in names %}"{{ name }}",{% endfor %}];
+function generateGroup() {
+  var size = document.getElementById('groupsize-select').value;
+  var shuffled = shuffle(classnames);
+  var names = chunk(shuffled, size);
+  var html = genHtml(names);
+  document.getElementById('pdf-content').innerHTML = html;
+}
+
+
 function printDiv({divId, title}) {
   let mywindow = window.open('', 'PRINT', 'height=650,width=900,top=100,left=150');
 

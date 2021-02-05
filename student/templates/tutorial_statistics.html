@@ -50,13 +50,19 @@
       <img src="{{ profile.photo.url }}" alt="" class="profile-photo">
       <div class="profile-text-container">
         <p class="profile-username">{{ profile.user.username }}</p>
-        <p class="profile-role">Instructor</p>
+        <p class="profile-role">
+          {% if profile.role == 'I' %}
+            Instructor
+          {% else %}
+            Student
+          {% endif %}
+        </p>
       </div>
     </div>
   </div>
   <div class="widenav-links">
     <div class="widenav-link">
-      <a href="#">Class home</a>
+      <a href="{% url 'classes' %}">Class home</a>
     </div>
     <div class="widenav-link active">
       <a href="#">Tutorials</a>
@@ -66,7 +72,7 @@
 
 <div class="content">
   <nav class="content--nav">
-    <h1 class="content--nav-title">Lesson {{ lesson.order }}: {{ lesson.title }}</h1>
+    <h1 class="content--nav-title">Tutorial Statistics</h1>
   </nav>
   <div class="content--content">
     <div class="barchart-container">
@@ -156,7 +162,7 @@ var randomColorGenerator = function () {
 (function() {
   var ctx = document.getElementById('feedback-bar-chart');
   var labels = [{% for lesson in completionPercentages.keys %} "{{ lesson.title }}", {% endfor %}];
-  var data = [3, 1, 4];
+  var data = [{% for percentage in feedbackPercentages %} "{{ percentage }}", {% endfor %}];
   var backgroundColor = [{% for percentage in completionPercentages.values %} randomColorGenerator(), {% endfor %}];
   var myChart = new Chart(ctx, {
       type: 'horizontalBar',
@@ -194,7 +200,7 @@ var randomColorGenerator = function () {
 (function() {
   var ctx = document.getElementById('attempt-bar-chart');
   var labels = [{% for lesson in completionPercentages.keys %} "{{ lesson.title }}", {% endfor %}];
-  var data = [7, 3, 8];
+  var data = [{% for average in averageAttempts %} "{{ average }}", {% endfor %}]
   var backgroundColor = [{% for percentage in completionPercentages.values %} randomColorGenerator(), {% endfor %}];
   var myChart = new Chart(ctx, {
       type: 'horizontalBar',

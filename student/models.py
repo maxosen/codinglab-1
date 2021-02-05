@@ -154,6 +154,9 @@ class Exercise(models.Model):
     # Date Exercise is created
     date_created = models.DateField(auto_now_add=True)
 
+    def __str__(self) -> str:
+        return f'{self.id}: {self.title}'
+
 
 class Assignment(models.Model):
     student = models.ForeignKey(StudentProfile, on_delete=models.CASCADE)
@@ -181,6 +184,32 @@ class Assignment(models.Model):
                 progress = ExerciseProgress(exercise=exercise, assignment=assignment)
                 progress.save()
         return assignment
+
+    def has_any_lesson(self, lessons):
+        for lesson in lessons:
+            if self.has_lesson(lesson):
+                return True
+        return False
+
+    def has_any_exercise(self, exercises):
+        for exercise in exercises:
+            if self.has_exercise(exercise):
+                return True
+        False
+    
+    def has_lesson(self, lesson):
+        lessons = Lesson.objects.filter(tutorial=self.tutorial)
+        for l in lessons:
+            if l == lesson:
+                return True
+        return False
+    
+    def has_exercise(self, exercise):
+        exercises = Exercise.objects.filter(tutorial=self.tutorial)
+        for e in exercises:
+            if e == exercise:
+                return True
+        return False
 
     def create_exercises_progress(self):
         exercises = Exercise.objects.filter(tutorial=self.tutorial)
@@ -261,7 +290,7 @@ class LoginEvent(models.Model):
 class ExerciseSubmissionEvent(models.Model):
     assignment = models.ForeignKey(Assignment, on_delete=models.CASCADE)
     exercise = models.ForeignKey(Exercise, on_delete=models.CASCADE)
-    frequency = models.IntegerField
+    frequency = models.IntegerField()
     duration = models.FloatField()
     result = models.BooleanField()
 
@@ -273,7 +302,7 @@ class ExerciseSubmissionEvent(models.Model):
 class LessonSubmissionEvent(models.Model):
     assignment = models.ForeignKey(Assignment, on_delete=models.CASCADE)
     lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE)
-    frequency = models.IntegerField
+    frequency = models.IntegerField()
     duration = models.FloatField()
     result = models.BooleanField()
 

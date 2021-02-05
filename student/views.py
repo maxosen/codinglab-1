@@ -8,7 +8,7 @@ from django.views.decorators.http import require_POST, require_GET
 
 from .forms import TutorialForm, LessonForm, LoginForm, RegistrationForm, StudentProfileForm, InstructorProfileForm, ExerciseForm
 from .models import Assignment, ExerciseFeedback, ExerciseSubmissionEvent, LessonFeedback, LessonSubmissionEvent, Tutorial, Lesson, Exercise, StudentProfile, InstructorProfile, Class, LessonProgress, ExerciseProgress, ExerciseSolution, LoginEvent
-from .analytics import get_overall_completion_rate, groupStudents
+from .analytics import getExerciseAttempts, getFeedbackPercentages, get_overall_completion_rate, groupStudents
 from .utils import run_testcases, is_testcases_pass
 
 import json
@@ -26,13 +26,17 @@ def tutorial_statistics(request, class_id, tutorial_id):
     completionPercentages = getCompletionPercentages(
                                 getTutorialProgress(tutorial_id)
                             )
+    feedbackPercentages = getFeedbackPercentages(tutorial_id)
     overallCompletionPercent = get_overall_completion_rate(completionPercentages)
+    averageAttempts = getExerciseAttempts(tutorial_id)
     tutorial = Tutorial.objects.get(id=tutorial_id)
     
     context = {
         'tutorial': tutorial,
         'completionPercentages': completionPercentages,
         'overallCompletionRate': overallCompletionPercent,
+        'feedbackPercentages': feedbackPercentages,
+        'averageAttempts': averageAttempts,
         'profile': profile,
     }
     return render(request, 'tutorial_statistics.html', context)
@@ -165,6 +169,7 @@ def exercise(request, id, assignment_id):
     assignment = get_object_or_404(Assignment, id=assignment_id)
     tutorial = assignment.tutorial
     exercise = Exercise.objects.get(id=id)
+    print(exercise.testcases)
     testcases = json.loads(exercise.testcases)
     completed = ExerciseProgress.objects.get(exercise=exercise, assignment=assignment)
     context = {
@@ -198,6 +203,7 @@ def submit_exercise(request, id, assignment_id):
 
 @require_POST
 def record_exercise_attempts(request, id, assignment_id):
+    print('hey')
     data = json.loads(request.body.decode("utf-8"))
     num_of_attempts = data['attempts']
     is_pass = data['pass']
@@ -503,12 +509,14 @@ Example Output:
 @login_required
 def grouping(request, class_id):
     students = StudentProfile.objects.filter(class_enrolled__id=class_id)
+    names = [student.user.username for student in students]
     if request.method == "POST":
         group_size = int(request.POST['size'])
         criteria = request.POST['criteria']
         students = groupStudents(students, group_size, criteria)
     context = {
-        'students': students
+        'students': students,
+        'names': names
     }
     return render(request, 'grouping.html', context)
 

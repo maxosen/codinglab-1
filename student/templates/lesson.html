@@ -53,13 +53,19 @@
       <img src="{{ profile.photo.url }}" alt="" class="profile-photo">
       <div class="profile-text-container">
         <p class="profile-username">{{ profile.user.username }}</p>
-        <p class="profile-role">Instructor</p>
+        <p class="profile-role">
+          {% if profile.role == 'I' %}
+            Instructor
+          {% else %}
+            Student
+          {% endif %}
+        </p>
       </div>
     </div>
   </div>
   <div class="widenav-links">
     <div class="widenav-link">
-      <a href="#">Class home</a>
+      <a href="{% url 'classes' %}">Class home</a>
     </div>
     <div class="widenav-link active">
       <a href="#">Tutorials</a>
@@ -109,6 +115,7 @@
 <div class="feedback-popup" id="feedback-popup">
   <div class="feedback-form-container" id="feedback-form-container">
     <div style="font-size: 20px;">What do you feel about this lesson?</div>
+    <p style="margin-top: 8px;">Rate the difficulty of this exercise.</p>
     <form class="rating" id="feedback-rating">
       <label>
         <input type="radio" name="stars" value="1" />
@@ -160,10 +167,60 @@
 <script src="{% static 'vendor/prism.js' %}"></script>
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 <script>
+var attempts = 0;
+var attempt_pass = false;
+let startDate = new Date();
+let elapsedTime = 0;
+var csrfToken = Cookies.get('csrftoken');
+
+window.onbeforeunload = function() {
+  var requestBody = {
+    'attempts': attempts,
+    'pass': attempt_pass,
+    'duration': elapsedTime
+  }
+
+  var url = "{% url 'record_lesson_attempts' assignment_id=request.resolver_match.kwargs.assignment_id id=request.resolver_match.kwargs.id %}";
+
+  var request = new Request(
+    url,
+    {
+      method: 'POST',
+      headers: {'X-CSRFToken': csrfToken},
+      body: JSON.stringify(requestBody),
+      mode: 'same-origin',
+    }
+  );
+  fetch(request)
+    .then(response => response.json())
+};
+
+const focus = function() {
+  startDate = new Date();
+};
+
+const blur = function() {
+  const endDate = new Date();
+  const spentTime = endDate.getTime() - startDate.getTime();
+  elapsedTime += spentTime;
+};
+
+const beforeunload = function() {
+  const endDate = new Date();
+  const spentTime = endDate.getTime() - startDate.getTime();
+  elapsedTime += spentTime;
+  // elapsedTime contains the time spent on page in milliseconds
+};
+
+window.addEventListener('focus', focus);
+window.addEventListener('blur', blur);
+window.addEventListener('beforeunload', beforeunload);
+
 document.getElementById('markdown').innerHTML =
   marked('{{ lesson.markdown|escapejs }}');
   
 function submit() {
+  attempts += 1;
   var ans = document.getElementById('quick-ex-ans').value;
   var actualAns = "{{ lesson.exercise_ans }}";
   if (ans === actualAns) {
@@ -180,8 +237,8 @@ function submit() {
     fetch(request)
       .then(response => response.json())
       .then(data => console.log(data));
-
-    showResult(true)
+    attempt_pass = true;
+    showResult(true);
   } else {
     showResult(false)
   }

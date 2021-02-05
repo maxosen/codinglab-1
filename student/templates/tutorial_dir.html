@@ -44,13 +44,19 @@
       <img src="{{ profile.photo.url }}" alt="" class="profile-photo">
       <div class="profile-text-container">
         <p class="profile-username">{{ profile.user.username }}</p>
-        <p class="profile-role">Instructor</p>
+        <p class="profile-role">
+          {% if profile.role == 'I' %}
+            Instructor
+          {% else %}
+            Student
+          {% endif %}
+        </p>
       </div>
     </div>
   </div>
   <div class="widenav-links">
     <div class="widenav-link">
-      <a href="#">Class home</a>
+      <a href="{% url 'classes' %}">Class home</a>
     </div>
     <div class="widenav-link active">
       <a href="#">My Tutorials</a>
@@ -61,7 +67,7 @@
 <!-- C O N T E N T -->
 <div class="content">
   <nav class="content--nav">
-    <h1 class="content--nav-title">Basics of JavaScript</h1>
+    <h1 class="content--nav-title">Tutorial Directory</h1>
   </nav>
 
   <div class="content--content">

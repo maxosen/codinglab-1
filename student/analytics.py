@@ -3,6 +3,48 @@ import numpy as np
 
 from .models import ExerciseFeedback, ExerciseSubmissionEvent, LessonFeedback, LessonSubmissionEvent, LoginEvent, StudentProfile, Tutorial, Assignment, Lesson, Exercise, LessonProgress, ExerciseProgress
 
+def getFeedbackPercentages(tutorial_id) -> list:
+    tutorial = Tutorial.objects.get(id=tutorial_id)
+    percentages = []
+    if tutorial.tutorial_type == Tutorial.LESSON:
+        units = Lesson.objects.filter(tutorial=tutorial)
+        # get the number of assignments that contains this lesson
+        for unit in units:
+            num_of_students = len(list(filter(lambda x: x.has_lesson(unit), Assignment.objects.all())))
+            num_of_feedbacks = len(LessonFeedback.objects.filter(lesson=unit))
+            percentage = num_of_feedbacks / num_of_students
+            percentages.append(percentage)
+    else:
+        units = Exercise.objects.filter(tutorial=tutorial)
+        # get the number of assignments that contains this lesson
+        for unit in units:
+            num_of_students = len(list(filter(lambda x: x.has_exercise(unit), Assignment.objects.all())))
+            num_of_feedbacks = len(ExerciseFeedback.objects.filter(exercise=unit))
+            percentage = num_of_feedbacks / num_of_students
+            percentages.append(percentage)
+    return percentages
+    
+def getExerciseAttempts(tutorial_id) -> list:
+    tutorial = Tutorial.objects.get(id=tutorial_id)
+    averages = []
+    if tutorial.tutorial_type == Tutorial.LESSON:
+        units = Lesson.objects.filter(tutorial=tutorial)
+        # get the number of assignments that contains this lesson
+        for unit in units:
+            num_of_students = len(list(filter(lambda x: x.has_lesson(unit), Assignment.objects.all())))
+            num_of_attempts = sum([l.frequency for l in LessonSubmissionEvent.objects.filter(lesson=unit)])
+            average = num_of_attempts / num_of_students
+            averages.append(average)
+    else:
+        units = Exercise.objects.filter(tutorial=tutorial)
+        # get the number of assignments that contains this lesson
+        for unit in units:
+            num_of_students = len(list(filter(lambda x: x.has_exercise(unit), Assignment.objects.all())))
+            num_of_attempts = sum([e.frequency for e in ExerciseSubmissionEvent.objects.filter(exercise=unit)])
+            average = num_of_attempts / num_of_students
+            averages.append(average)
+    return averages
+
 
 '''
 Get progress of tutorial, ordered by lessons/exercises, and students
@@ -100,9 +142,20 @@ def get_student_engagement(student: StudentProfile) -> float:
 def get_student_skill(student: StudentProfile) -> float:
     # GET AVERAGE LESSON/EXERCISE SUBMISSION FREQUENCY
     average_lesson_freq = [submission.frequency for submission in LessonSubmissionEvent.objects.filter(assignment__student=student)]
-    average_lesson_freq = sum(average_lesson_freq) / len(average_lesson_freq)
+    total = sum(average_lesson_freq)
+    num = len(average_lesson_freq)
+    if num == 0:
+        average_lesson_freq = 0
+    else:
+        average_lesson_freq = total / num
+
     average_exercise_freq = [submission.frequency for submission in ExerciseSubmissionEvent.objects.filter(assignment__student=student)]
-    average_exercise_freq = sum(average_exercise_freq) / len(average_exercise_freq)
+    total = sum(average_exercise_freq)
+    num = len(average_exercise_freq)
+    if num == 0:
+        average_exercise_freq = 0
+    else:
+        average_exercise_freq = total / num
     overall_average = average_exercise_freq + average_lesson_freq
     if overall_average == 1:
         return 1
@@ -123,11 +176,14 @@ SSD: Sum of Squared Differences
 def shuffledSSD(scores: list, target: int, length: int, split_size: int):
     indices = np.arange(length)
     np.random.shuffle(indices)
+    scores = [float(x) for x in list(scores)]
+    scores = np.array(scores).astype(float)
     scores = np.array(scores)[indices]
     scores = np.array_split(scores, length / split_size)
     averages = [np.sum(score) for score in scores]
     SSD = np.square(np.array(averages) - np.array(target))
     SSD = np.sum(SSD)
+    indices = tuple(indices)
     return {indices: SSD}
 
 
@@ -137,7 +193,8 @@ return the permutations of closest sub-array average to target
 def findClosestPermutation(scores: list, target: int, length: int, split_size: int, iterations: int=100):
     permutations = {}
     for i in range(iterations):
-        permutations.append(shuffledSSD(scores, target, length, split_size))
+        shuffledssd = shuffledSSD(scores, target, length, split_size)
+        permutations.update(shuffledssd)
     index = min(permutations.values())
     indices = permutations.keys[index]
     return indices
